@@ -34,3 +34,13 @@ export interface LoginDto {
   email: string;
   password: string;
 }
+
+export interface RefreshResponse {
+    success: boolean,
+    data: {
+        access_token: string,
+        expires_in: number,
+        token_type: string
+    },
+    message: string
+}

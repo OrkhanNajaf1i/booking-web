@@ -5,7 +5,8 @@ import { AuthGuard } from './guards/AuthGuard';
 import { BusinessGuard } from './guards/BusinessGuard';
 import { MainLayout } from '../layouts/MainLayout';
 import { RootRedirect } from '../../pages/root-redirect';
-import { OnboardingPage } from '../../pages/onboarding';
+import  OnboardingPage  from '../../pages/onboarding';
+import CustomersPage from "../../pages/customers/index"
 import RegisterPage from '@/pages/register';
 import LoginPage from '@/pages/login';
 import { GuestGuard } from './guards/GuestGuard';
@@ -30,17 +31,12 @@ export const routes: RouteObject[] = [
         ]
     },
     {
-        element: <AuthGuard/>,
-        children: [
-            {
-                path:`${paths.onboarding}`,
-                element: <OnboardingPage/>,
-            }
-        ]
-    },
-    {
         element: (<AuthGuard/>),
         children: [
+            {
+                path:`${paths.onboarding()}`,
+                element: <OnboardingPage/>,
+            },
             {
                 path: 'business/:businessId',
                 element: (<BusinessGuard />),
@@ -75,6 +71,16 @@ export const routes: RouteObject[] = [
                             {
                                 path: "settings",
                                 element: (<div>Settings</div>)
+                            },
+                            {
+                                // child routes must use relative paths, not absolute ones
+                                // previously we used paths.customers("sadf323") which produced
+                                // "/business/sadf323/customers" and React Router complained that
+                                // an absolute path nested under "business/:businessId" is invalid.
+                                // Instead just specify the segment directly and let the parent
+                                // path's param supply the businessId.
+                                path: 'customers',
+                                element: (<CustomersPage/>)
                             }
                         ]
                     }
