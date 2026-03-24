@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import {
   Form,
   FormControl,
@@ -78,8 +79,7 @@ export function LoginForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
+                  <PasswordInput
                     placeholder="••••••••"
                     autoComplete="current-password"
                     {...field}
@@ -93,7 +93,7 @@ export function LoginForm() {
           {/* Actions: Forgot + Submit */}
           <div className="flex items-center justify-between">
             <Link
-              to={paths.forgotPassword ?? '#'}
+              to={paths.forgotPassword() ?? '#'}
               className="text-xs text-muted-foreground hover:text-primary"
             >
               Forgot password?

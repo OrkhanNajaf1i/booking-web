@@ -23,7 +23,7 @@ export function useCreateSoloBusiness() {
       );
       console.log(response);
       localStorage.setItem('accessToken', response.data.data.access_token);
-
+      // localStorage.setItem("business_id", business.id)
       queryClient.setQueryData(['my-business'], business);
       toast.success('Biznes uğurla yaradıldı!');
       navigate(`/business/${business.id}/dashboard`);

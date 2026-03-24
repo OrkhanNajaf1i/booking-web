@@ -1,13 +1,14 @@
-import { Bell, LogOut, ChevronDown } from 'lucide-react';
+import { LogOut, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NotificationBell } from './NotificationBell';
+import { useBusinessQuery } from '@/entities/business';
+// import {Business} from '@/entities/business/model/types';
 
-// Mock user — sonra real auth store-dan gələcək
 const MOCK_USER = {
   name: 'Orxan Məmmədov',
   email: 'orxan@gmail.com',
-  avatar: null, // şəkil yoxdursa initials göstəririk
+  avatar: null, 
 };
 
 function getInitials(name: string) {
@@ -28,13 +29,13 @@ export function Topbar() {
     localStorage.removeItem('refreshToken');
     navigate('/login', { replace: true });
   };
-
+  const {data:business} = useBusinessQuery()
   return (
     <header className="flex h-14 shrink-0 items-center justify-between border-b border-neutral-200 bg-white px-6 dark:border-neutral-800 dark:bg-neutral-950">
 
       {/* Sol: Sistem adı */}
       <span className="text-sm font-semibold text-neutral-900 dark:text-white">
-        Bookify
+        {business?.service_category}
       </span>
 
       {/* Sağ: Actions */}
@@ -51,12 +52,12 @@ export function Topbar() {
           >
             {/* Avatar */}
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-200 text-xs font-semibold text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
-              {getInitials(MOCK_USER.name)}
+              {getInitials(business?.name!)}
             </div>
 
             {/* Ad */}
             <span className="hidden text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:block">
-              {MOCK_USER.name}
+              {business?.name}
             </span>
 
             <ChevronDown size={14} className="text-neutral-400" />
