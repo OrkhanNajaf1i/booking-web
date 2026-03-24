@@ -1,5 +1,6 @@
 import {type CustomerDto } from '@/entities/customer/model/types';
 import {CustomerRow} from '@/entities/customer/ui/CustomerRow';
+import { CustomerTableSkeleton } from './CustomerTableSkeleton';
 
 interface CustomerTableProps {
   customers: CustomerDto[];
@@ -14,16 +15,8 @@ export function CustomerTable({
   page = 1, 
   totalPages = 1 
 }: CustomerTableProps) {
-  // Loading state
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-12">
-        <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-          <p className="mt-3 text-sm text-gray-600">Loading customers...</p>
-        </div>
-      </div>
-    );
+    return <CustomerTableSkeleton rows={8} />;
   }
 
   // Empty state
