@@ -64,6 +64,8 @@ apiClient.interceptors.response.use(
             { refresh_token: storedRefreshToken },
             { headers: { 'Content-Type': 'application/json' } }
           );          
+          console.log(data);
+          
           const newAccessToken: string = data.data.access_token;
 
           localStorage.setItem('accessToken', newAccessToken);

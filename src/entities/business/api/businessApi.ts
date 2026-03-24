@@ -9,5 +9,9 @@ export const businessApi = {
     solo: async (dto: SoloBusinessDto): Promise<Business> => {
         const { data } = await apiClient.post<Business>('/businesses/solo', dto)
         return data
+    },
+    getBusiness: async (): Promise<Business> => {
+        const { data } = await apiClient.get<Business>('/business')
+        return data
     }
 }

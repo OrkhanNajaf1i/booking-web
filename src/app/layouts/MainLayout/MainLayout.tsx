@@ -2,12 +2,16 @@ import type { ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from '@/widgets/Sidebar/ui/Sidebar';
 import { Topbar } from '@/widgets/Topbar/ui/Topbar';
+import { useBusinessQuery } from '@/entities/business';
+import { MainLayoutSkeleton } from './MainLayoutSkeleton';
 
 interface MainLayoutProps {
   children: ReactNode;
 }
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
+  const { isLoading } = useBusinessQuery();
+  if (isLoading) return <MainLayoutSkeleton />;
   return (
     <div className="flex h-screen overflow-hidden bg-neutral-50 dark:bg-neutral-950">
       

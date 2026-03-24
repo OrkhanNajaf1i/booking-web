@@ -11,6 +11,7 @@ import RegisterPage from '@/pages/register';
 import LoginPage from '@/pages/login';
 import { GuestGuard } from './guards/GuestGuard';
 import {paths} from '@/app/router/lib/paths';
+import { OnboardingGuard } from './guards/OnboardingGuard';
 
 export const routes: RouteObject[] = [
     {
@@ -33,9 +34,15 @@ export const routes: RouteObject[] = [
     {
         element: (<AuthGuard/>),
         children: [
-            {
-                path:`${paths.onboarding()}`,
-                element: <OnboardingPage/>,
+             {
+                element: (<OnboardingGuard />),
+                children: [
+                    {
+                    path: paths.onboarding(),
+                    element: <OnboardingPage />,
+                    },
+                    // gələcəkdə business create page varsa onu da bura sal
+                ],
             },
             {
                 path: 'business/:businessId',
