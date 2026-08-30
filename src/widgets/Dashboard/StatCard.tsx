@@ -53,16 +53,15 @@ export const StatCard = ({title, value, trend, trendUp, icon, color}:StatCardPro
             {value}
           </h3>
           
-          {/* Trend hissəsi */}
+          {/* Alt qeyd — rəqəmi izah edir (müqayisə deyil) */}
           {trend && (
             <div className="mt-2 flex items-center text-sm">
               <span className={cn(
                 "font-medium",
-                trendUp ? "text-green-600" : "text-red-600"
+                trendUp ? "text-green-600" : "text-gray-500"
               )}>
-                {trendUp ? '↗' : '↘'} {trend}
+                {trend}
               </span>
-              <span className="ml-1 text-gray-400">keçən ayla müqayisədə</span>
             </div>
           )}
         </div>

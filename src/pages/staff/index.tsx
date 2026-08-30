@@ -18,10 +18,17 @@ import {
   type StaffRole,
 } from '@/entities/staff/api/staffApi';
 import { extractErrorMessage } from '@/shared/api/errors';
+import { useBusinessQuery } from '@/entities/business';
 
 export default function StaffPage() {
   const queryClient = useQueryClient();
   const [inviteOpen, setInviteOpen] = useState(false);
+  const { data: business } = useBusinessQuery();
+
+  // Tək işləyən həkim/bərbər üçün "komanda" anlayışı yoxdur — o, özü
+  // xidmət göstərəndir. Ekran buna görə fərqli danışır, amma dəvət
+  // imkanı qalır: adam işçi götürsə komandaya çevrilə bilər.
+  const isSolo = business?.business_type === 'solo_practitioner';
 
   const { data: staff = [], isLoading } = useQuery({
     queryKey: ['staff', 'list'],
@@ -46,10 +53,12 @@ export default function StaffPage() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
-            İşçilər
+            {isSolo ? 'Mütəxəssis' : 'İşçilər'}
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Randevu qəbul edən mütəxəssislər. Hər birinin öz iş qrafiki olur.
+            {isSolo
+              ? 'Siz tək işləyirsiniz — randevular birbaşa sizin adınıza gəlir.'
+              : 'Randevu qəbul edən mütəxəssislər. Hər birinin öz iş qrafiki olur.'}
           </p>
         </div>
 
@@ -58,7 +67,7 @@ export default function StaffPage() {
           className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-900"
         >
           <UserPlus size={15} />
-          İşçi dəvət et
+          {isSolo ? 'Komandaya işçi əlavə et' : 'İşçi dəvət et'}
         </button>
       </header>
 
@@ -68,7 +77,11 @@ export default function StaffPage() {
         <div className="rounded-2xl border border-dashed border-neutral-200 p-12 text-center dark:border-neutral-800">
           <Users size={28} className="mx-auto text-neutral-300" />
           <p className="mt-3 text-sm text-neutral-500">
-            Hələ aktiv işçi yoxdur.
+            Hələ aktiv mütəxəssis yoxdur.
+          </p>
+          <p className="mt-1 text-xs text-neutral-400">
+            Biznes yaradılanda siz avtomatik mütəxəssis kimi əlavə olunmalı
+            idiniz — görünmürsə, çıxıb yenidən daxil olun.
           </p>
         </div>
       )}
