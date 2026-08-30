@@ -98,6 +98,16 @@ export interface ScheduleSettings {
   /** true → bron təsdiq gözləmədən confirmed olur */
   auto_confirm: boolean;
   allow_reschedule_proposal: boolean;
+
+  // ─── Randevu siyasəti ──────────────────────────────────────
+  /** Provider bu müddətdə cavab verməsə bron avtomatik ləğv olunur. 0 = sönülü */
+  pending_expires_mins: number;
+  /** Randevuya bu qədər vaxt qalanda müştəri artıq ləğv edə bilməz. 0 = sərbəst */
+  cancellation_window_mins: number;
+  /** Müştəri özü vaxt dəyişə bilsin? */
+  allow_customer_reschedule: boolean;
+  /** Vaxt dəyişmək üçün son müddət */
+  reschedule_window_mins: number;
 }
 
 export type UpdateScheduleSettingsDto = Partial<
