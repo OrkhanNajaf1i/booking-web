@@ -15,6 +15,7 @@ import { OnboardingGuard } from './guards/OnboardingGuard';
 import Settings from '@/pages/settings/index';
 import BookingsPage from '@/pages/bookings';
 import SchedulePage from '@/pages/schedule';
+import StaffPage from '@/pages/staff';
 
 export const routes: RouteObject[] = [
     {
@@ -85,7 +86,7 @@ export const routes: RouteObject[] = [
                             },
                               {
                                 path: "staff",
-                                element: (<div>Staff</div>)
+                                element: (<StaffPage />)
                             },
                             {
                                 // child routes must use relative paths, not absolute ones
