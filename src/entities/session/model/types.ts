@@ -22,12 +22,28 @@ export interface AuthResponse {
   user: User;
 }
 
+/** Hesab tipi — bu panel yalnız xidmət göstərənlər üçündür. */
+export type AccountType = 'customer' | 'provider';
+
+/** Xidmət göstərən rolları — admin panelə yalnız bunlar girə bilər. */
+export const PROVIDER_ROLES: User['role'][] = [
+  'provider_owner',
+  'staff',
+  'solo_practitioner',
+];
+
+export function isProviderRole(role: User['role']): boolean {
+  return PROVIDER_ROLES.includes(role);
+}
+
 // Register Request Body
 export interface RegisterDto {
   email: string;
   full_name: string;
   password: string;
   phone: string;
+  /** Admin panel həmişə "provider" göndərir. */
+  account_type?: AccountType;
 }
 
 export interface LoginDto {
