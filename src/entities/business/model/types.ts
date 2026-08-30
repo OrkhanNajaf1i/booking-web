@@ -21,3 +21,8 @@ export interface SoloBusinessDto{
     phone: string,
     service_category: string
 }
+export interface UpdateBusinessDTO {
+  name?:     string;
+  phone?:    number;
+  industry?: string;
+}

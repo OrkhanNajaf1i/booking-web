@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { RealtimeProvider } from '@/shared/lib/realtime/RealtimeProvider';
 
 export const AuthGuard = () => {
   const isAuth = localStorage.getItem('accessToken');
@@ -7,5 +8,11 @@ export const AuthGuard = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />;
+  // WebSocket yalnız login olunmuş sahədə qalxır — login səhifəsində
+  // token olmadan boş-boşuna qoşulmağa çalışmasın.
+  return (
+    <RealtimeProvider>
+      <Outlet />
+    </RealtimeProvider>
+  );
 };
