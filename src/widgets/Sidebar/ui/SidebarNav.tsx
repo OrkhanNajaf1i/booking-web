@@ -1,6 +1,5 @@
 import { SidebarNavItem } from './SidebarNavItem';
 import type { NavGroup } from '../model/types';
-import clsx from 'clsx';
 
 interface Props {
   groups: NavGroup[];

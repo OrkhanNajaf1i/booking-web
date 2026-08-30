@@ -1,5 +1,5 @@
 import { apiClient } from '../../../shared/api/client';
-import type { Business, MultiBusinessDto, SoloBusinessDto } from '../model/types';
+import type { Business, MultiBusinessDto, SoloBusinessDto, UpdateBusinessDTO } from '../model/types';
 
 export const businessApi = {
     multi:async (dto: MultiBusinessDto): Promise<Business> => {
@@ -12,6 +12,10 @@ export const businessApi = {
     },
     getBusiness: async (): Promise<Business> => {
         const { data } = await apiClient.get<Business>('/business')
+        return data
+    },
+    updateBusiness: async (dto:UpdateBusinessDTO): Promise<UpdateBusinessDTO> => {
+        const { data } = await apiClient.put<UpdateBusinessDTO>('/business', dto)
         return data
     }
 }
