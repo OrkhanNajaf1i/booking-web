@@ -17,6 +17,7 @@ import {
 } from '@/entities/booking/model/types';
 import { ProposeTimeDialog } from '@/features/booking/propose/ui/ProposeTimeDialog';
 import { useRealtime } from '@/shared/lib/realtime/RealtimeProvider';
+import { formatDayLabel, formatTimeRange } from '@/shared/lib/date';
 
 const FILTERS: { label: string; value: BookingStatus | 'all' }[] = [
   { label: 'Hamısı', value: 'all' },
@@ -27,18 +28,7 @@ const FILTERS: { label: string; value: BookingStatus | 'all' }[] = [
 ];
 
 function formatRange(startIso: string, endIso: string): string {
-  const start = new Date(startIso);
-  const end = new Date(endIso);
-
-  const date = start.toLocaleDateString('az-AZ', {
-    day: '2-digit',
-    month: 'long',
-    weekday: 'short',
-  });
-  const time = (value: Date) =>
-    value.toLocaleTimeString('az-AZ', { hour: '2-digit', minute: '2-digit' });
-
-  return `${date}, ${time(start)}–${time(end)}`;
+  return `${formatDayLabel(startIso)}, ${formatTimeRange(startIso, endIso)}`;
 }
 
 export default function BookingsPage() {
