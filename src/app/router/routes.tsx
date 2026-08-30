@@ -12,6 +12,9 @@ import LoginPage from '@/pages/login';
 import { GuestGuard } from './guards/GuestGuard';
 import {paths} from '@/app/router/lib/paths';
 import { OnboardingGuard } from './guards/OnboardingGuard';
+import Settings from '@/pages/settings/index';
+import BookingsPage from '@/pages/bookings';
+import SchedulePage from '@/pages/schedule';
 
 export const routes: RouteObject[] = [
     {
@@ -61,11 +64,12 @@ export const routes: RouteObject[] = [
                             },
                             {
                                 path: 'bookings',
-                                element: (<div>Booking</div>)
+                                element: (<BookingsPage />)
                             },
                             {
-                                path: "slots",
-                                element: (<div>Slots</div>)
+                                // İş saatı, nahar fasiləsi və seçim addımı
+                                path: "schedule",
+                                element: (<SchedulePage />)
                             },
                             {
                                 path: "services",
@@ -76,8 +80,12 @@ export const routes: RouteObject[] = [
                                 element: (<div>Locations</div>)
                             },
                             {
-                                path: "settings",
-                                element: (<div>Settings</div>)
+                                path: "settings/profile",
+                                element: (<Settings/>)
+                            },
+                              {
+                                path: "staff",
+                                element: (<div>Staff</div>)
                             },
                             {
                                 // child routes must use relative paths, not absolute ones

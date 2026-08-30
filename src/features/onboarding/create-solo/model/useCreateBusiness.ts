@@ -21,7 +21,6 @@ export function useCreateSoloBusiness() {
         `${API_BASE_URL}/auth/refresh`,
         { refresh_token: storedRefreshToken }
       );
-      console.log(response);
       localStorage.setItem('accessToken', response.data.data.access_token);
       // localStorage.setItem("business_id", business.id)
       queryClient.setQueryData(['my-business'], business);
