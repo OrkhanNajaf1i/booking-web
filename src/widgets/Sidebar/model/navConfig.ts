@@ -26,9 +26,9 @@ export const NAV_GROUPS: NavGroup[] = [
         path: (id) => paths.bookings(id),
       },
       {
-        label: 'Slots',
+        label: 'İş qrafiki',
         icon: Clock3,
-        path: (id) => `/business/${id}/slots`,
+        path: (id) => `/business/${id}/schedule`,
       },
     ],
   },

@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { Outlet } from 'react-router-dom';
 import { Sidebar } from '@/widgets/Sidebar/ui/Sidebar';
 import { Topbar } from '@/widgets/Topbar/ui/Topbar';
 import { useBusinessQuery } from '@/entities/business';
