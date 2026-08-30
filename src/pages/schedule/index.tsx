@@ -110,6 +110,10 @@ export default function SchedulePage() {
         max_advance_days: settings.max_advance_days,
         auto_confirm: settings.auto_confirm,
         allow_reschedule_proposal: settings.allow_reschedule_proposal,
+        pending_expires_mins: settings.pending_expires_mins,
+        cancellation_window_mins: settings.cancellation_window_mins,
+        allow_customer_reschedule: settings.allow_customer_reschedule,
+        reschedule_window_mins: settings.reschedule_window_mins,
       });
     },
     onSuccess: () => {
@@ -392,6 +396,55 @@ export default function SchedulePage() {
               checked={settings.allow_reschedule_proposal}
               onChange={(value) => updateSetting('allow_reschedule_proposal', value)}
             />
+            <ToggleField
+              label="Müştəri özü vaxt dəyişə bilsin"
+              hint="Aşağıdakı pəncərə çərçivəsində müştəri yeni vaxt təklif edir"
+              checked={settings.allow_customer_reschedule}
+              onChange={(value) => updateSetting('allow_customer_reschedule', value)}
+            />
+          </div>
+
+          {/* ─── Randevu siyasəti ─────────────────────────── */}
+          <div className="border-t border-neutral-100 px-5 py-5 dark:border-neutral-800">
+            <h3 className="text-sm font-semibold text-neutral-900 dark:text-white">
+              Randevu siyasəti
+            </h3>
+            <p className="mt-0.5 text-xs text-neutral-500">
+              Ləğv və dəyişiklik qaydaları. 0 qoysanız məhdudiyyət olmur.
+            </p>
+
+            <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <NumberField
+                label="Ləğv pəncərəsi (dəq)"
+                hint="Randevuya bu qədər qalanda müştəri ləğv edə bilməz"
+                value={settings.cancellation_window_mins}
+                min={0}
+                max={20160}
+                onChange={(value) =>
+                  updateSetting('cancellation_window_mins', value)
+                }
+              />
+              <NumberField
+                label="Dəyişiklik pəncərəsi (dəq)"
+                hint="Müştərinin vaxt dəyişməsi üçün son müddət"
+                value={settings.reschedule_window_mins}
+                min={0}
+                max={20160}
+                onChange={(value) =>
+                  updateSetting('reschedule_window_mins', value)
+                }
+              />
+              <NumberField
+                label="Cavab müddəti (dəq)"
+                hint="Cavabsız qalan sorğu bu müddətdən sonra avtomatik ləğv olunur"
+                value={settings.pending_expires_mins}
+                min={0}
+                max={20160}
+                onChange={(value) =>
+                  updateSetting('pending_expires_mins', value)
+                }
+              />
+            </div>
           </div>
 
           {/* Canlı nümunə */}
