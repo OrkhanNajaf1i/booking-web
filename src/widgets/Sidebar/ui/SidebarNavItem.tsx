@@ -1,6 +1,7 @@
 import { NavLink, useParams } from 'react-router-dom';
-import type { NavItem } from '../model/types';
 import clsx from 'clsx';
+
+import type { NavItem } from '../model/types';
 
 interface Props {
   item: NavItem;
@@ -17,22 +18,27 @@ export function SidebarNavItem({ item, collapsed }: Props) {
       title={item.label}
       className={({ isActive }) =>
         clsx(
-          'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150',
-          'hover:bg-neutral-100 dark:hover:bg-neutral-800',
+          'group relative flex items-center gap-3 rounded-lg py-2 text-sm font-medium transition-colors',
+          collapsed ? 'justify-center px-0' : 'px-3',
           isActive
-            ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white'
-            : 'text-neutral-500 dark:text-neutral-400'
+            ? 'bg-brand-50 text-brand-800 dark:bg-brand-700/15 dark:text-brand-200'
+            : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white',
         )
       }
     >
-      <item.icon
-        size={18}
-        className="shrink-0 transition-transform duration-150 group-hover:scale-110"
-      />
-      {!collapsed && (
-        <span className="truncate transition-opacity duration-150">
-          {item.label}
-        </span>
+      {({ isActive }) => (
+        <>
+          {/* Aktiv səhifə yalnız rənglə deyil, sol kənardakı zolaqla da
+              göstərilir — rəngi ayırd edə bilməyən istifadəçi üçün. */}
+          {isActive && (
+            <span
+              aria-hidden="true"
+              className="absolute top-1.5 bottom-1.5 -left-2 w-1 rounded-r-full bg-brand-700 dark:bg-brand-400"
+            />
+          )}
+          <item.icon size={18} className="shrink-0" />
+          {!collapsed && <span className="truncate">{item.label}</span>}
+        </>
       )}
     </NavLink>
   );

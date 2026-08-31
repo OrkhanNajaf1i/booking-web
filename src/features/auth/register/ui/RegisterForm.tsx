@@ -1,13 +1,18 @@
-import { useForm } from 'react-hook-form'; 
-import { Button } from "@/components/ui/button"
+import { useForm } from 'react-hook-form';
+
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PasswordInput } from '@/components/ui/password-input';
-
-
-import { useRegister } from '../model/useRegister';
+import { Button } from '@/shared/ui/primitives';
 import type { RegisterDto } from '@/entities/session/model/types';
 
+import { useRegister } from '../model/useRegister';
+
+/** Sahə altındakı xəta mətni — hər yerdə eyni görünsün. */
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p className="text-xs font-medium text-danger-700">{message}</p>;
+}
 
 export function RegisterForm() {
   const { mutate: registerUser, isPending } = useRegister();
@@ -17,91 +22,68 @@ export function RegisterForm() {
     formState: { errors },
   } = useForm<RegisterDto>();
 
-  const onSubmit = (data: RegisterDto) => {
-    registerUser(data);
-  };
-
   return (
-    <form 
-      onSubmit={handleSubmit(onSubmit)} 
-      className="space-y-4 max-w-md mx-auto p-6 border rounded-lg bg-white shadow-sm"
-    >
-      <h2 className="text-2xl font-bold mb-6 text-center">Hesab yarat</h2>
-
-      {/* ─────────────────── Full Name Input ─────────────────── */}
-      <div className="space-y-2">
-        <Label htmlFor="full_name">Ad Soyad</Label>
+    <form onSubmit={handleSubmit((data) => registerUser(data))} className="space-y-4">
+      <div className="space-y-1.5">
+        <Label htmlFor="full_name">Ad, soyad</Label>
         <Input
           id="full_name"
-          placeholder="Məs: Orkhan Najafli"
-          {...register('full_name', { required: 'Ad soyad daxil edilməlidir' })}
+          autoComplete="name"
+          placeholder="Orxan Nəcəfli"
+          {...register('full_name', { required: 'Ad və soyadı yazın' })}
         />
-        {/* Xəta varsa qırmızı mesaj göstər */}
-        {errors.full_name && (
-          <p className="text-red-500 text-sm font-medium">{errors.full_name.message}</p>
-        )}
+        <FieldError message={errors.full_name?.message} />
       </div>
 
-      {/* ─────────────────── Email Input ─────────────────── */}
-      <div className="space-y-2">
-        <Label htmlFor="email">Email ünvanı</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="email">E-poçt</Label>
         <Input
           id="email"
           type="email"
-          placeholder="mail@example.com"
-          {...register('email', { 
-            required: 'Email vacibdir',
-            pattern: { 
-              value: /^\S+@\S+$/i, 
-              message: 'Düzgün email formatı daxil edin' 
-            }
+          autoComplete="email"
+          placeholder="ad@nümunə.az"
+          {...register('email', {
+            required: 'E-poçt daxil edin',
+            pattern: { value: /^\S+@\S+$/i, message: 'Düzgün e-poçt ünvanı yazın' },
           })}
         />
-        {errors.email && (
-          <p className="text-red-500 text-sm font-medium">{errors.email.message}</p>
-        )}
+        <FieldError message={errors.email?.message} />
       </div>
 
-      {/* ─────────────────── Phone Input ─────────────────── */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <Label htmlFor="phone">Mobil nömrə</Label>
         <Input
           id="phone"
+          type="tel"
+          autoComplete="tel"
           placeholder="+994 50 123 45 67"
-          {...register('phone', { required: 'Nömrə daxil edilməlidir' })}
+          {...register('phone', { required: 'Nömrəni yazın' })}
         />
-        {errors.phone && (
-          <p className="text-red-500 text-sm font-medium">{errors.phone.message}</p>
-        )}
+        <FieldError message={errors.phone?.message} />
       </div>
 
-      {/* ─────────────────── Password Input ─────────────────── */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <Label htmlFor="password">Şifrə</Label>
         <PasswordInput
           id="password"
-          placeholder="••••••"
+          placeholder="Ən azı 6 simvol"
           autoComplete="new-password"
-          {...register('password', { 
-            required: 'Şifrə təyin edin', 
-            minLength: { 
-              value: 6, 
-              message: 'Şifrə ən az 6 simvol olmalıdır' 
-            } 
+          {...register('password', {
+            required: 'Şifrə təyin edin',
+            minLength: { value: 6, message: 'Şifrə ən azı 6 simvol olmalıdır' },
           })}
         />
-        {errors.password && (
-          <p className="text-red-500 text-sm font-medium">{errors.password.message}</p>
-        )}
+        <FieldError message={errors.password?.message} />
       </div>
 
-      {/* ─────────────────── Submit Button ─────────────────── */}
-      <Button 
-        type="submit" 
-        className="w-full mt-4" 
-        disabled={isPending} 
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        loading={isPending}
+        className="mt-1 w-full"
       >
-        {isPending ? 'Qeydiyyatdan keçilir...' : 'Qeydiyyatı Tamamla'}
+        {isPending ? 'Hesab yaradılır…' : 'Hesab yarat'}
       </Button>
     </form>
   );

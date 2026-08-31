@@ -67,14 +67,14 @@ export function ProposeTimeDialog({ booking, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-neutral-900">
-        <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3.5 dark:border-neutral-800">
-          <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">
+      <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
             Alternativ vaxt təklif et
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-neutral-400 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X size={16} />
           </button>
@@ -82,7 +82,7 @@ export function ProposeTimeDialog({ booking, onClose }: Props) {
 
         <div className="space-y-4 px-5 py-4">
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Tarix
             </span>
             <input
@@ -93,21 +93,21 @@ export function ProposeTimeDialog({ booking, onClose }: Props) {
                 setDate(event.target.value);
                 setSelectedStart(null);
               }}
-              className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+              className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
             />
           </label>
 
           <div>
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Boş vaxtlar
             </span>
 
             {isLoading && (
-              <p className="mt-2 text-sm text-neutral-400">Hesablanır…</p>
+              <p className="mt-2 text-sm text-slate-500">Hesablanır…</p>
             )}
 
             {!isLoading && !day?.is_workday && (
-              <p className="mt-2 text-sm text-neutral-400">
+              <p className="mt-2 text-sm text-slate-500">
                 Bu gün iş günü deyil.
               </p>
             )}
@@ -115,7 +115,7 @@ export function ProposeTimeDialog({ booking, onClose }: Props) {
             {!isLoading && day?.is_workday && (
               <>
                 {day.break && (
-                  <p className="mt-1 text-[11px] text-neutral-400">
+                  <p className="mt-1 text-[11px] text-slate-500">
                     Nahar fasiləsi: {day.break.start}–{day.break.end}
                   </p>
                 )}
@@ -136,10 +136,10 @@ export function ProposeTimeDialog({ booking, onClose }: Props) {
                         title={!slot.available ? slotHint(slot.state) : undefined}
                         className={`rounded-lg border px-2 py-1.5 text-sm transition-colors ${
                           isSelected
-                            ? 'border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900'
+                            ? 'border-brand-700 bg-brand-700 text-white'
                             : slot.available
-                              ? 'border-neutral-200 text-neutral-700 hover:border-neutral-400 dark:border-neutral-700 dark:text-neutral-300'
-                              : 'cursor-not-allowed border-neutral-100 text-neutral-300 line-through dark:border-neutral-800 dark:text-neutral-600'
+                              ? 'border-slate-200 text-slate-700 hover:border-slate-400 dark:border-slate-700 dark:text-slate-300'
+                              : 'cursor-not-allowed border-slate-100 text-slate-300 line-through dark:border-slate-800 dark:text-slate-600'
                         }`}
                       >
                         {label}
@@ -149,7 +149,7 @@ export function ProposeTimeDialog({ booking, onClose }: Props) {
                 </div>
 
                 {slots.length === 0 && (
-                  <p className="mt-2 text-sm text-neutral-400">
+                  <p className="mt-2 text-sm text-slate-500">
                     Bu gün üçün boş vaxt yoxdur.
                   </p>
                 )}
@@ -158,7 +158,7 @@ export function ProposeTimeDialog({ booking, onClose }: Props) {
           </div>
 
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Qeyd (müştəri görəcək)
             </span>
             <textarea
@@ -166,22 +166,22 @@ export function ProposeTimeDialog({ booking, onClose }: Props) {
               onChange={(event) => setNote(event.target.value)}
               rows={2}
               placeholder="Məsələn: həmin saat təcili əməliyyat düşüb."
-              className="resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+              className="resize-none rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
             />
           </label>
         </div>
 
-        <div className="flex justify-end gap-2 border-t border-neutral-100 px-5 py-3 dark:border-neutral-800">
+        <div className="flex justify-end gap-2 border-t border-slate-100 px-5 py-3 dark:border-slate-800">
           <button
             onClick={onClose}
-            className="rounded-lg px-4 py-2 text-sm text-neutral-600 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="rounded-lg px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             Ləğv et
           </button>
           <button
             onClick={() => propose.mutate()}
             disabled={!selectedStart || propose.isPending}
-            className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-neutral-900"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
           >
             {propose.isPending && <Loader2 size={14} className="animate-spin" />}
             Təklifi göndər

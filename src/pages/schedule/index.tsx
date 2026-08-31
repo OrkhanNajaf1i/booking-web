@@ -157,13 +157,13 @@ export default function SchedulePage() {
   }, [settings, week]);
 
   if (staffLoading) {
-    return <div className="p-8 text-sm text-neutral-400">Yüklənir…</div>;
+    return <div className="p-8 text-sm text-slate-500">Yüklənir…</div>;
   }
 
   if (staff.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-neutral-200 p-12 text-center">
-        <p className="text-sm text-neutral-500">
+      <div className="rounded-2xl border border-dashed border-slate-200 p-12 text-center">
+        <p className="text-sm text-slate-500">
           Qrafik təyin etmək üçün əvvəlcə işçi əlavə edin.
         </p>
       </div>
@@ -174,20 +174,20 @@ export default function SchedulePage() {
     <div className="space-y-8">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             İş qrafiki
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-slate-500">
             İş saatları, nahar fasiləsi və seçim addımı buradan idarə olunur.
           </p>
         </div>
 
         <label className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-neutral-500">İşçi</span>
+          <span className="text-xs font-medium text-slate-500">İşçi</span>
           <select
             value={staffId}
             onChange={(event) => setStaffId(event.target.value)}
-            className="min-w-56 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+            className="min-w-56 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
           >
             {staff.map((member) => (
               <option key={member.id} value={member.id}>
@@ -199,18 +199,18 @@ export default function SchedulePage() {
       </header>
 
       {/* ─── Həftəlik qrafik ───────────────────────────────── */}
-      <section className="rounded-2xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
-        <div className="flex items-center gap-2 border-b border-neutral-100 px-5 py-3.5 dark:border-neutral-800">
-          <Clock size={16} className="text-neutral-400" />
-          <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">
+      <section className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
+          <Clock size={16} className="text-slate-500" />
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
             Həftəlik iş saatları
           </h2>
         </div>
 
         {hoursLoading ? (
-          <p className="px-5 py-8 text-sm text-neutral-400">Yüklənir…</p>
+          <p className="px-5 py-8 text-sm text-slate-500">Yüklənir…</p>
         ) : (
-          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {week.map((day) => (
               <div
                 key={day.day_of_week}
@@ -223,13 +223,13 @@ export default function SchedulePage() {
                     onChange={(event) =>
                       updateDay(day.day_of_week, { is_active: event.target.checked })
                     }
-                    className="h-4 w-4 rounded border-neutral-300 accent-neutral-900"
+                    className="h-4 w-4 rounded border-slate-300 accent-brand-700"
                   />
                   <span
                     className={`text-sm font-medium ${
                       day.is_active
-                        ? 'text-neutral-900 dark:text-white'
-                        : 'text-neutral-400'
+                        ? 'text-slate-900 dark:text-white'
+                        : 'text-slate-500'
                     }`}
                   >
                     {DAY_NAMES[day.day_of_week]}
@@ -244,9 +244,9 @@ export default function SchedulePage() {
                     onChange={(event) =>
                       updateDay(day.day_of_week, { start_time: event.target.value })
                     }
-                    className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-sm disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-900"
+                    className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm disabled:opacity-40 dark:border-slate-700 dark:bg-slate-900"
                   />
-                  <span className="text-neutral-400">–</span>
+                  <span className="text-slate-500">–</span>
                   <input
                     type="time"
                     value={day.end_time}
@@ -254,7 +254,7 @@ export default function SchedulePage() {
                     onChange={(event) =>
                       updateDay(day.day_of_week, { end_time: event.target.value })
                     }
-                    className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-sm disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-900"
+                    className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm disabled:opacity-40 dark:border-slate-700 dark:bg-slate-900"
                   />
                 </div>
 
@@ -267,10 +267,10 @@ export default function SchedulePage() {
                     onChange={(event) =>
                       updateDay(day.day_of_week, { break_enabled: event.target.checked })
                     }
-                    className="h-4 w-4 rounded border-neutral-300 accent-neutral-900 disabled:opacity-40"
+                    className="h-4 w-4 rounded border-slate-300 accent-brand-700 disabled:opacity-40"
                   />
-                  <Coffee size={14} className="text-neutral-400" />
-                  <span className="text-xs text-neutral-500">Nahar</span>
+                  <Coffee size={14} className="text-slate-500" />
+                  <span className="text-xs text-slate-500">Nahar</span>
                 </label>
 
                 {day.break_enabled && day.is_active && (
@@ -281,16 +281,16 @@ export default function SchedulePage() {
                       onChange={(event) =>
                         updateDay(day.day_of_week, { break_start: event.target.value })
                       }
-                      className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                      className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
                     />
-                    <span className="text-neutral-400">–</span>
+                    <span className="text-slate-500">–</span>
                     <input
                       type="time"
                       value={day.break_end ?? '14:00'}
                       onChange={(event) =>
                         updateDay(day.day_of_week, { break_end: event.target.value })
                       }
-                      className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                      className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
                     />
                   </div>
                 )}
@@ -299,11 +299,11 @@ export default function SchedulePage() {
           </div>
         )}
 
-        <div className="flex justify-end border-t border-neutral-100 px-5 py-3 dark:border-neutral-800">
+        <div className="flex justify-end border-t border-slate-100 px-5 py-3 dark:border-slate-800">
           <button
             onClick={() => saveWeek.mutate()}
             disabled={saveWeek.isPending || !staffId}
-            className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-neutral-900"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
           >
             {saveWeek.isPending ? (
               <Loader2 size={14} className="animate-spin" />
@@ -317,12 +317,12 @@ export default function SchedulePage() {
 
       {/* ─── Seçim qaydaları ───────────────────────────────── */}
       {settings && (
-        <section className="rounded-2xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
-          <div className="border-b border-neutral-100 px-5 py-3.5 dark:border-neutral-800">
-            <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">
+        <section className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+          <div className="border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
               Seçim qaydaları
             </h2>
-            <p className="mt-0.5 text-xs text-neutral-500">
+            <p className="mt-0.5 text-xs text-slate-500">
               Müştərinin gördüyü vaxtların necə kəsiləcəyini təyin edir.
             </p>
           </div>
@@ -383,7 +383,7 @@ export default function SchedulePage() {
             />
           </div>
 
-          <div className="space-y-3 border-t border-neutral-100 px-5 py-4 dark:border-neutral-800">
+          <div className="space-y-3 border-t border-slate-100 px-5 py-4 dark:border-slate-800">
             <ToggleField
               label="Avtomatik təsdiq"
               hint="Aktivdirsə bron təsdiq gözləmədən dərhal təsdiqlənir"
@@ -405,11 +405,11 @@ export default function SchedulePage() {
           </div>
 
           {/* ─── Randevu siyasəti ─────────────────────────── */}
-          <div className="border-t border-neutral-100 px-5 py-5 dark:border-neutral-800">
-            <h3 className="text-sm font-semibold text-neutral-900 dark:text-white">
+          <div className="border-t border-slate-100 px-5 py-5 dark:border-slate-800">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
               Randevu siyasəti
             </h3>
-            <p className="mt-0.5 text-xs text-neutral-500">
+            <p className="mt-0.5 text-xs text-slate-500">
               Ləğv və dəyişiklik qaydaları. 0 qoysanız məhdudiyyət olmur.
             </p>
 
@@ -448,28 +448,28 @@ export default function SchedulePage() {
           </div>
 
           {/* Canlı nümunə */}
-          <div className="border-t border-neutral-100 px-5 py-4 dark:border-neutral-800">
-            <p className="text-xs font-medium text-neutral-500">
+          <div className="border-t border-slate-100 px-5 py-4 dark:border-slate-800">
+            <p className="text-xs font-medium text-slate-500">
               Nümunə — müştəri belə görəcək:
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
               {previewTimes.map((time) => (
                 <span
                   key={time}
-                  className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm text-neutral-700 dark:border-neutral-700 dark:text-neutral-300"
+                  className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-700 dark:text-slate-300"
                 >
                   {time}
                 </span>
               ))}
-              <span className="self-center text-sm text-neutral-400">…</span>
+              <span className="self-center text-sm text-slate-500">…</span>
             </div>
           </div>
 
-          <div className="flex justify-end border-t border-neutral-100 px-5 py-3 dark:border-neutral-800">
+          <div className="flex justify-end border-t border-slate-100 px-5 py-3 dark:border-slate-800">
             <button
               onClick={() => saveSettings.mutate()}
               disabled={saveSettings.isPending}
-              className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-neutral-900"
+              className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
             >
               {saveSettings.isPending ? (
                 <Loader2 size={14} className="animate-spin" />
@@ -504,7 +504,7 @@ function NumberField({
 }) {
   return (
     <label className="flex flex-col gap-1">
-      <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+      <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
         {label}
       </span>
       <input
@@ -513,9 +513,9 @@ function NumberField({
         min={min}
         max={max}
         onChange={(event) => onChange(Number(event.target.value))}
-        className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+        className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
       />
-      <span className="text-[11px] text-neutral-400">{hint}</span>
+      <span className="text-[11px] text-slate-500">{hint}</span>
     </label>
   );
 }
@@ -537,13 +537,13 @@ function ToggleField({
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
-        className="mt-0.5 h-4 w-4 rounded border-neutral-300 accent-neutral-900"
+        className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-brand-700"
       />
       <span>
-        <span className="block text-sm font-medium text-neutral-900 dark:text-white">
+        <span className="block text-sm font-medium text-slate-900 dark:text-white">
           {label}
         </span>
-        <span className="block text-xs text-neutral-500">{hint}</span>
+        <span className="block text-xs text-slate-500">{hint}</span>
       </span>
     </label>
   );

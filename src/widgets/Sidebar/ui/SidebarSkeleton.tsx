@@ -3,9 +3,9 @@ import { NAV_GROUPS } from '../model/navConfig';
 
 export function SidebarSkeleton() {
   return (
-    <aside className="flex h-screen w-55 flex-col border-r border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+    <aside className="flex h-screen w-55 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
       {/* Logo */}
-      <div className="flex h-14 shrink-0 items-center border-b border-neutral-200 px-4 dark:border-neutral-800">
+      <div className="flex h-14 shrink-0 items-center border-b border-slate-200 px-4 dark:border-slate-800">
         <Skeleton className="h-5 w-20" />
       </div>
 
@@ -30,7 +30,7 @@ export function SidebarSkeleton() {
       </div>
 
       {/* Collapse toggle */}
-      <div className="shrink-0 border-t border-neutral-200 p-2 dark:border-neutral-800">
+      <div className="shrink-0 border-t border-slate-200 p-2 dark:border-slate-800">
         <div className="flex items-center gap-2 px-3 py-2">
           <Skeleton className="h-4.5 w-4.5 rounded" />
           <Skeleton className="h-4 w-14" />

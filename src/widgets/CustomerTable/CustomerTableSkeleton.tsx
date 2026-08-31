@@ -8,10 +8,10 @@ interface CustomerTableSkeletonProps {
 
 export function CustomerTableSkeleton({ rows = 8 }: CustomerTableSkeletonProps) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white overflow-hidden shadow-sm">
+    <div className="rounded-lg border border-slate-200 bg-white overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
-        <table className="w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="w-full divide-y divide-slate-200">
+          <thead className="bg-slate-50">
             <tr>
               {COLUMNS.map((col) => (
                 <th key={col} className="px-4 py-3 text-left">
@@ -20,7 +20,7 @@ export function CustomerTableSkeleton({ rows = 8 }: CustomerTableSkeletonProps) 
               ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-slate-200">
             {Array.from({ length: rows }).map((_, i) => (
               <tr key={i}>
                 {/* Name + avatar */}
@@ -60,7 +60,7 @@ export function CustomerTableSkeleton({ rows = 8 }: CustomerTableSkeletonProps) 
       </div>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 bg-gray-50 px-4 py-3">
+      <div className="border-t border-slate-200 bg-slate-50 px-4 py-3">
         <Skeleton className="h-4 w-48" />
       </div>
     </div>

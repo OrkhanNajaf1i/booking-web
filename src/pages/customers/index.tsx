@@ -36,8 +36,8 @@ export default function CustomersPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
-        <p className="mt-1 text-sm text-gray-600">
+        <h1 className="text-2xl font-bold text-slate-900">Customers</h1>
+        <p className="mt-1 text-sm text-slate-600">
           Manage your customer database
         </p>
       </div>
