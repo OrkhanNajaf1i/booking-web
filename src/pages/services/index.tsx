@@ -47,10 +47,10 @@ export default function ServicesPage() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             Xidmətlər
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-slate-500">
             Hər xidmətin müddəti randevunun uzunluğunu, qiyməti isə gəlir
             hesabatını təyin edir.
           </p>
@@ -58,20 +58,20 @@ export default function ServicesPage() {
 
         <button
           onClick={() => setCreating(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-900"
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800"
         >
           <Plus size={15} />
           Xidmət əlavə et
         </button>
       </header>
 
-      {isLoading && <p className="text-sm text-neutral-400">Yüklənir…</p>}
+      {isLoading && <p className="text-sm text-slate-500">Yüklənir…</p>}
 
       {!isLoading && active.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-neutral-200 p-12 text-center dark:border-neutral-800">
-          <Scissors size={28} className="mx-auto text-neutral-300" />
-          <p className="mt-3 text-sm text-neutral-500">Hələ xidmət yoxdur.</p>
-          <p className="mt-1 text-xs text-neutral-400">
+        <div className="rounded-2xl border border-dashed border-slate-200 p-12 text-center dark:border-slate-800">
+          <Scissors size={28} className="mx-auto text-slate-300" />
+          <p className="mt-3 text-sm text-slate-500">Hələ xidmət yoxdur.</p>
+          <p className="mt-1 text-xs text-slate-500">
             Xidmət əlavə etməsəniz randevular default müddətlə yaranır və
             gəlir hesablanmır.
           </p>
@@ -92,7 +92,7 @@ export default function ServicesPage() {
 
       {inactive.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-sm font-semibold text-neutral-500">
+          <h2 className="text-sm font-semibold text-slate-500">
             Deaktiv ({inactive.length})
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -133,35 +133,35 @@ function ServiceCard({
 }) {
   return (
     <article
-      className={`flex flex-col rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900 ${
+      className={`flex flex-col rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 ${
         inactive ? 'opacity-60' : ''
       }`}
     >
       <div className="flex items-start justify-between gap-2">
-        <h3 className="min-w-0 flex-1 truncate text-sm font-semibold text-neutral-900 dark:text-white">
+        <h3 className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-900 dark:text-white">
           {service.name}
         </h3>
-        <span className="shrink-0 text-sm font-semibold text-neutral-900 dark:text-white">
+        <span className="shrink-0 text-sm font-semibold text-slate-900 dark:text-white">
           {formatPrice(service.price)}
         </span>
       </div>
 
-      <p className="mt-1 flex items-center gap-1.5 text-xs text-neutral-500">
+      <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
         <Clock size={12} />
         {formatDuration(service.duration_minutes)}
       </p>
 
       {service.description && (
-        <p className="mt-2 line-clamp-2 text-xs text-neutral-500">
+        <p className="mt-2 line-clamp-2 text-xs text-slate-500">
           {service.description}
         </p>
       )}
 
       {!inactive && (
-        <div className="mt-3 flex gap-2 border-t border-neutral-100 pt-3 dark:border-neutral-800">
+        <div className="mt-3 flex gap-2 border-t border-slate-100 pt-3 dark:border-slate-800">
           <button
             onClick={onEdit}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-xs text-neutral-600 transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             <Pencil size={12} />
             Düzəliş
@@ -169,7 +169,7 @@ function ServiceCard({
           <button
             onClick={onDeactivate}
             disabled={busy}
-            className="rounded-lg px-3 py-1.5 text-xs text-neutral-500 transition-colors hover:bg-neutral-100 disabled:opacity-50 dark:hover:bg-neutral-800"
+            className="rounded-lg px-3 py-1.5 text-xs text-slate-500 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:hover:bg-slate-800"
           >
             Deaktiv et
           </button>
@@ -223,14 +223,14 @@ function ServiceDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-neutral-900">
-        <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3.5 dark:border-neutral-800">
-          <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">
+      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
             {isEdit ? 'Xidməti dəyiş' : 'Yeni xidmət'}
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-neutral-400 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X size={16} />
           </button>
@@ -238,7 +238,7 @@ function ServiceDialog({
 
         <div className="space-y-4 px-5 py-4">
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Ad
             </span>
             <input
@@ -247,13 +247,13 @@ function ServiceDialog({
                 setForm({ ...form, name: event.target.value })
               }
               placeholder="Saç kəsimi"
-              className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+              className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
             />
           </label>
 
           <div className="grid grid-cols-2 gap-4">
             <label className="flex flex-col gap-1">
-              <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+              <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
                 Müddət (dəq)
               </span>
               <input
@@ -267,15 +267,15 @@ function ServiceDialog({
                     duration_minutes: Number(event.target.value),
                   })
                 }
-                className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               />
-              <span className="text-[11px] text-neutral-400">
+              <span className="text-[11px] text-slate-500">
                 Randevunun uzunluğu
               </span>
             </label>
 
             <label className="flex flex-col gap-1">
-              <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+              <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
                 Qiymət (₼)
               </span>
               <input
@@ -286,16 +286,16 @@ function ServiceDialog({
                 onChange={(event) =>
                   setForm({ ...form, price: Number(event.target.value) })
                 }
-                className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               />
-              <span className="text-[11px] text-neutral-400">
+              <span className="text-[11px] text-slate-500">
                 Gəlir hesabatına gedir
               </span>
             </label>
           </div>
 
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Təsvir (istəyə bağlı)
             </span>
             <textarea
@@ -305,22 +305,22 @@ function ServiceDialog({
               }
               rows={2}
               placeholder="Müştəri bunu seçim ekranında görəcək"
-              className="resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+              className="resize-none rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
             />
           </label>
         </div>
 
-        <div className="flex justify-end gap-2 border-t border-neutral-100 px-5 py-3 dark:border-neutral-800">
+        <div className="flex justify-end gap-2 border-t border-slate-100 px-5 py-3 dark:border-slate-800">
           <button
             onClick={onClose}
-            className="rounded-lg px-4 py-2 text-sm text-neutral-600 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="rounded-lg px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             Ləğv et
           </button>
           <button
             onClick={() => save.mutate()}
             disabled={!canSave || save.isPending}
-            className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-neutral-900"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
           >
             {save.isPending && <Loader2 size={14} className="animate-spin" />}
             Yadda saxla

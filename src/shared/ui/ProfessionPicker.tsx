@@ -132,25 +132,25 @@ export function ProfessionPicker({ value, onChange }: Props) {
           onChange={(event) => handleTyping(event.target.value)}
           onFocus={() => setOpen(true)}
           placeholder={isLoading ? 'Yüklənir…' : 'Peşənizi seçin və ya yazın'}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-9 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full rounded-lg border border-slate-300 px-3 py-2 pr-9 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           type="button"
           tabIndex={-1}
           onClick={() => setOpen((previous) => !previous)}
-          className="absolute inset-y-0 right-0 flex items-center px-2.5 text-gray-400"
+          className="absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500"
         >
           <ChevronDown size={16} />
         </button>
 
         {open && (
-          <ul className="absolute z-20 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+          <ul className="absolute z-20 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
             {matches.map((item) => (
               <li key={item.slug}>
                 <button
                   type="button"
                   onClick={() => pick(item.slug, item.name)}
-                  className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-gray-50"
+                  className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-50"
                 >
                   <span>{item.name}</span>
                   {item.slug === value.categorySlug && !isCustom && (
@@ -161,7 +161,7 @@ export function ProfessionPicker({ value, onChange }: Props) {
             ))}
 
             {matches.length === 0 && (
-              <li className="px-3 py-2 text-sm text-gray-500">
+              <li className="px-3 py-2 text-sm text-slate-500">
                 Siyahıda belə peşə yoxdur — yazdığınız saxlanacaq.
               </li>
             )}

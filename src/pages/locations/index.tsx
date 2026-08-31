@@ -69,10 +69,10 @@ export default function LocationsPage() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             Filiallar
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-slate-500">
             Xidmətin göstərildiyi yerlər. Müştəri hansı filiala gedəcəyini
             burada görür.
           </p>
@@ -80,19 +80,19 @@ export default function LocationsPage() {
 
         <button
           onClick={() => setCreating(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-900"
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800"
         >
           <Plus size={15} />
           Filial əlavə et
         </button>
       </header>
 
-      {isLoading && <p className="text-sm text-neutral-400">Yüklənir…</p>}
+      {isLoading && <p className="text-sm text-slate-500">Yüklənir…</p>}
 
       {!isLoading && locations.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-neutral-200 p-12 text-center dark:border-neutral-800">
-          <MapPin size={28} className="mx-auto text-neutral-300" />
-          <p className="mt-3 text-sm text-neutral-500">Hələ filial yoxdur.</p>
+        <div className="rounded-2xl border border-dashed border-slate-200 p-12 text-center dark:border-slate-800">
+          <MapPin size={28} className="mx-auto text-slate-300" />
+          <p className="mt-3 text-sm text-slate-500">Hələ filial yoxdur.</p>
         </div>
       )}
 
@@ -100,43 +100,43 @@ export default function LocationsPage() {
         {locations.map((location) => (
           <article
             key={location.id}
-            className={`rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900 ${
+            className={`rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 ${
               location.is_active ? '' : 'opacity-60'
             }`}
           >
             <div className="flex items-start justify-between gap-2">
-              <h3 className="min-w-0 flex-1 truncate text-sm font-semibold text-neutral-900 dark:text-white">
+              <h3 className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-900 dark:text-white">
                 {location.name}
               </h3>
               {!location.is_active && (
-                <span className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-500 dark:bg-neutral-800">
+                <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                   Deaktiv
                 </span>
               )}
             </div>
 
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-slate-500">
               {[location.address, location.city].filter(Boolean).join(', ') ||
                 'Ünvan göstərilməyib'}
             </p>
 
             {location.phone && (
-              <p className="mt-0.5 text-xs text-neutral-400">{location.phone}</p>
+              <p className="mt-0.5 text-xs text-slate-500">{location.phone}</p>
             )}
 
             {location.latitude != null && (
-              <p className="mt-1 flex items-center gap-1 text-[11px] text-neutral-400">
+              <p className="mt-1 flex items-center gap-1 text-[11px] text-slate-500">
                 <MapPin size={10} />
                 Xəritədə qeyd olunub
               </p>
             )}
 
-            <div className="mt-3 flex flex-wrap gap-2 border-t border-neutral-100 pt-3 dark:border-neutral-800">
+            <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-100 pt-3 dark:border-slate-800">
               {location.is_active ? (
                 <>
                   <button
                     onClick={() => setEditing(location)}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-xs text-neutral-600 transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
                     <Pencil size={12} />
                     Düzəliş
@@ -144,7 +144,7 @@ export default function LocationsPage() {
                   <button
                     onClick={() => deactivate.mutate(location.id)}
                     disabled={busy}
-                    className="rounded-lg px-3 py-1.5 text-xs text-neutral-500 transition-colors hover:bg-neutral-100 disabled:opacity-50 dark:hover:bg-neutral-800"
+                    className="rounded-lg px-3 py-1.5 text-xs text-slate-500 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:hover:bg-slate-800"
                   >
                     Deaktiv et
                   </button>
@@ -154,7 +154,7 @@ export default function LocationsPage() {
                   <button
                     onClick={() => activate.mutate(location.id)}
                     disabled={busy}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-xs text-neutral-600 transition-colors hover:bg-neutral-50 disabled:opacity-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
                     <RotateCcw size={12} />
                     Aktivləşdir
@@ -170,7 +170,7 @@ export default function LocationsPage() {
                       }
                     }}
                     disabled={busy}
-                    className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-red-600 transition-colors hover:bg-red-50 disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                    className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-danger-700 transition-colors hover:bg-danger-50 disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-950/40"
                   >
                     <Trash2 size={12} />
                     Sil
@@ -238,14 +238,14 @@ function LocationDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 p-4">
-      <div className="my-8 w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-neutral-900">
-        <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3.5 dark:border-neutral-800">
-          <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">
+      <div className="my-8 w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
             {isEdit ? 'Filialı dəyiş' : 'Yeni filial'}
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-neutral-400 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X size={16} />
           </button>
@@ -253,7 +253,7 @@ function LocationDialog({
 
         <div className="space-y-4 px-5 py-4">
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Filialın adı
             </span>
             <input
@@ -262,13 +262,13 @@ function LocationDialog({
                 setForm({ ...form, name: event.target.value })
               }
               placeholder="Mərkəz filialı"
-              className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+              className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
             />
           </label>
 
           {/* Xəritə — seçim ünvanı avtomatik doldurur */}
           <div className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Xəritədən seçin
             </span>
             <LocationPicker
@@ -292,7 +292,7 @@ function LocationDialog({
           </div>
 
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
               Ünvan
             </span>
             <input
@@ -301,13 +301,13 @@ function LocationDialog({
                 setForm({ ...form, address: event.target.value })
               }
               placeholder="Nizami küç. 12"
-              className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+              className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
             />
           </label>
 
           <div className="grid grid-cols-2 gap-4">
             <label className="flex flex-col gap-1">
-              <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+              <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
                 Şəhər
               </span>
               <input
@@ -316,12 +316,12 @@ function LocationDialog({
                   setForm({ ...form, city: event.target.value })
                 }
                 placeholder="Bakı"
-                className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               />
             </label>
 
             <label className="flex flex-col gap-1">
-              <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+              <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
                 Telefon
               </span>
               <input
@@ -330,23 +330,23 @@ function LocationDialog({
                   setForm({ ...form, phone: event.target.value })
                 }
                 placeholder="+994501234567"
-                className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
               />
             </label>
           </div>
         </div>
 
-        <div className="flex justify-end gap-2 border-t border-neutral-100 px-5 py-3 dark:border-neutral-800">
+        <div className="flex justify-end gap-2 border-t border-slate-100 px-5 py-3 dark:border-slate-800">
           <button
             onClick={onClose}
-            className="rounded-lg px-4 py-2 text-sm text-neutral-600 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="rounded-lg px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             Ləğv et
           </button>
           <button
             onClick={() => save.mutate()}
             disabled={!form.name.trim() || save.isPending}
-            className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-neutral-900"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
           >
             {save.isPending && <Loader2 size={14} className="animate-spin" />}
             Yadda saxla

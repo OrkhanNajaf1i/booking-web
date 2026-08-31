@@ -22,8 +22,8 @@ export const StatsOverview = () => {
 
   if (isError || !data) {
     return (
-      <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50 p-8 text-center">
-        <p className="text-sm text-gray-500">
+      <div className="rounded-xl border border-dashed border-slate-300 bg-white/50 p-8 text-center dark:border-slate-700 dark:bg-transparent">
+        <p className="text-sm text-slate-500">
           Statistika yüklənmədi. Səhifəni yeniləyin.
         </p>
       </div>
@@ -31,51 +31,45 @@ export const StatsOverview = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <StatCard
         title="Bu günün randevuları"
         value={String(data.today_total)}
-        trend={
+        note={
           data.today_confirmed > 0
             ? `${data.today_confirmed} təsdiqlənib`
             : undefined
         }
-        trendUp
-        color="blue"
-        icon={<CalendarIcon className="h-6 w-6" />}
+        tone="brand"
+        icon={<CalendarIcon className="size-5" />}
       />
 
       <StatCard
         title="Təsdiq gözləyən"
         value={String(data.pending_total)}
-        trend={
-          data.today_pending > 0 ? `${data.today_pending} bu gün` : undefined
-        }
-        trendUp={data.today_pending > 0}
-        color="yellow"
-        icon={<ClockIcon className="h-6 w-6" />}
+        note={data.today_pending > 0 ? `${data.today_pending} bu gün` : undefined}
+        tone="warning"
+        icon={<ClockIcon className="size-5" />}
       />
 
       <StatCard
         title="Bu ayın gəliri"
         value={formatMoney(data.month_revenue)}
-        trend={
+        note={
           data.month_completed > 0
             ? `${data.month_completed} tamamlanıb`
             : undefined
         }
-        trendUp
-        color="green"
-        icon={<WalletIcon className="h-6 w-6" />}
+        tone="success"
+        icon={<WalletIcon className="size-5" />}
       />
 
       <StatCard
         title="Müştərilər"
         value={String(data.customers_total)}
-        trend={data.customers_new > 0 ? `${data.customers_new} yeni` : undefined}
-        trendUp
-        color="red"
-        icon={<UsersIcon className="h-6 w-6" />}
+        note={data.customers_new > 0 ? `${data.customers_new} yeni` : undefined}
+        tone="info"
+        icon={<UsersIcon className="size-5" />}
       />
     </div>
   );

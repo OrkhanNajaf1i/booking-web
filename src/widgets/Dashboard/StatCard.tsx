@@ -1,79 +1,76 @@
 import type { ReactNode } from 'react';
-import { cn } from '../../shared/lib/utils';
 
-interface StatCardProps{
-    title: string;
-    value: string;
-    trend?: string;
-    trendUp?: boolean;
-    icon: ReactNode;
-    color: 'blue' | 'green' | 'yellow' | 'red';
+import { cn } from '@/lib/utils';
+
+/**
+ * Göstərici kartı.
+ *
+ * Rəng burada məna daşıyır, bəzək deyil: sarı — diqqət tələb edən
+ * (təsdiq gözləyən), yaşıl — gəlir, marka rəngi — günün işi. Ona görə
+ * ton adları "blue/red" yox, mənaya görədir.
+ */
+export type StatTone = 'brand' | 'warning' | 'success' | 'info';
+
+const TONES: Record<StatTone, { icon: string; halo: string }> = {
+  brand: {
+    icon: 'bg-brand-50 text-brand-700 dark:bg-brand-700/20 dark:text-brand-300',
+    halo: 'bg-brand-100 dark:bg-brand-700/20',
+  },
+  warning: {
+    icon: 'bg-warning-50 text-warning-700 dark:bg-warning-700/20 dark:text-warning-200',
+    halo: 'bg-warning-200 dark:bg-warning-700/20',
+  },
+  success: {
+    icon: 'bg-success-50 text-success-700 dark:bg-success-700/20 dark:text-success-200',
+    halo: 'bg-success-200 dark:bg-success-700/20',
+  },
+  info: {
+    icon: 'bg-info-50 text-info-700 dark:bg-info-700/20 dark:text-info-200',
+    halo: 'bg-info-200 dark:bg-info-700/20',
+  },
+};
+
+interface StatCardProps {
+  title: string;
+  value: string;
+  /** Rəqəmi izah edən qeyd — müqayisə deyil. */
+  note?: string;
+  icon: ReactNode;
+  tone: StatTone;
 }
 
-export const StatCard = ({title, value, trend, trendUp, icon, color}:StatCardProps) => {
-    const colors = {
-        blue: {
-            bg: 'bg-blue-50',
-            text: 'text-blue-600',
-            border: 'border-blue-100',
-            iconBg: 'bg-blue-100',
-        },
-        green: {
-            bg: 'bg-green-50',
-            text: 'text-green-600',
-            border: 'border-green-100',
-            iconBg: 'bg-green-100',
-        },
-        yellow: {
-            bg: 'bg-yellow-50',
-            text: 'text-yellow-600',
-            border: 'border-yellow-100',
-            iconBg: 'bg-yellow-100',
-        },
-        red: {
-            bg: 'bg-red-50',
-            text: 'text-red-600',
-            border: 'border-red-100',
-            iconBg: 'bg-red-100',
-        },
-    };
-    const theme = colors[color]
-    return  <div className={cn(
-      "relative overflow-hidden rounded-2xl bg-white p-6 transition-all duration-300",
-      "border border-gray-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]", // Yumşaq kölgə
-      "hover:-translate-y-1 hover:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)]" // Hover effekti
-    )}>
-      {/* Arxa planda dekorativ dairə (müasir görünüş üçün) */}
-      <div className={cn("absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-20", theme.bg)} />
+export const StatCard = ({ title, value, note, icon, tone }: StatCardProps) => {
+  const theme = TONES[tone];
 
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <h3 className="mt-2 text-3xl font-bold text-gray-900 tracking-tight">
+  return (
+    <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-card p-5 shadow-xs transition-shadow hover:shadow-md dark:border-slate-800">
+      {/* Küncdəki yumşaq ləkə — kartı tamamilə düz görünməkdən çıxarır */}
+      <div
+        aria-hidden="true"
+        className={cn(
+          'pointer-events-none absolute -top-12 -right-12 size-24 rounded-full opacity-25 blur-2xl',
+          theme.halo,
+        )}
+      />
+
+      <div className="relative flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-slate-500">{title}</p>
+          <p className="tabular mt-2 text-[28px] leading-none font-bold tracking-tight text-slate-900 dark:text-white">
             {value}
-          </h3>
-          
-          {/* Alt qeyd — rəqəmi izah edir (müqayisə deyil) */}
-          {trend && (
-            <div className="mt-2 flex items-center text-sm">
-              <span className={cn(
-                "font-medium",
-                trendUp ? "text-green-600" : "text-gray-500"
-              )}>
-                {trend}
-              </span>
-            </div>
-          )}
+          </p>
+          {note && <p className="mt-2 text-xs text-slate-500">{note}</p>}
         </div>
 
-        {/* İkon qutusu */}
-        <div className={cn(
-          "flex h-12 w-12 items-center justify-center rounded-xl",
-          theme.iconBg,
-          theme.text
-        )}>
+        <span
+          className={cn(
+            'grid size-10 shrink-0 place-items-center rounded-[10px]',
+            theme.icon,
+          )}
+        >
           {icon}
-        </div>
+        </span>
       </div>
     </div>
-}   
+  );
+};

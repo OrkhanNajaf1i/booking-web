@@ -6,17 +6,17 @@ interface CustomerRowProps {
 
 export function CustomerRow({ customer }: CustomerRowProps) {
   return (
-    <tr className="border-b hover:bg-gray-50 transition-colors">
+    <tr className="border-b hover:bg-slate-50 transition-colors">
       <td className="px-4 py-3">
-        <div className="font-medium text-gray-900">{customer.full_name}</div>
+        <div className="font-medium text-slate-900">{customer.full_name}</div>
       </td>
 
       <td className="px-4 py-3">
-        <div className="text-sm text-gray-600">{customer.email}</div>
+        <div className="text-sm text-slate-600">{customer.email}</div>
       </td>
 
       <td className="px-4 py-3">
-        <div className="text-sm text-gray-900">{customer.phone}</div>
+        <div className="text-sm text-slate-900">{customer.phone}</div>
       </td>
 
       <td className="px-4 py-3">
@@ -24,7 +24,7 @@ export function CustomerRow({ customer }: CustomerRowProps) {
           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
             customer.status === 'active'
               ? 'bg-green-100 text-green-800'
-              : 'bg-gray-100 text-gray-800'
+              : 'bg-slate-100 text-slate-800'
           }`}
         >
           {customer.status}
@@ -32,14 +32,14 @@ export function CustomerRow({ customer }: CustomerRowProps) {
       </td>
 
       <td className="px-4 py-3 text-center">
-        <span className="text-sm font-medium text-gray-900">
+        <span className="text-sm font-medium text-slate-900">
           {customer.total_bookings}
         </span>
       </td>
 
       <td className="px-4 py-3">
         {customer.notes && (
-          <div className="text-xs text-gray-500 truncate max-w-xs">
+          <div className="text-xs text-slate-500 truncate max-w-xs">
             {customer.notes}
           </div>
         )}

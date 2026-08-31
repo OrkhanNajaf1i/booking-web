@@ -102,7 +102,7 @@ export function LocationPicker({ value, onPick, height = 260 }: Props) {
   return (
     <div className="space-y-2">
       <div
-        className="overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-700"
+        className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700"
         style={{ height }}
       >
         <MapContainer
@@ -120,7 +120,7 @@ export function LocationPicker({ value, onPick, height = 260 }: Props) {
         </MapContainer>
       </div>
 
-      <p className="flex items-center gap-1.5 text-xs text-neutral-500">
+      <p className="flex items-center gap-1.5 text-xs text-slate-500">
         {resolving ? (
           <>
             <Loader2 size={12} className="animate-spin" />
