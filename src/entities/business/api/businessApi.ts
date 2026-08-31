@@ -1,5 +1,11 @@
 import { apiClient } from '../../../shared/api/client';
-import type { Business, MultiBusinessDto, SoloBusinessDto, UpdateBusinessDTO } from '../model/types';
+import type {
+    Business,
+    BusinessMode,
+    MultiBusinessDto,
+    SoloBusinessDto,
+    UpdateBusinessDTO,
+} from '../model/types';
 
 export const businessApi = {
     multi:async (dto: MultiBusinessDto): Promise<Business> => {
@@ -16,6 +22,14 @@ export const businessApi = {
     },
     updateBusiness: async (dto:UpdateBusinessDTO): Promise<UpdateBusinessDTO> => {
         const { data } = await apiClient.put<UpdateBusinessDTO>('/business', dto)
+        return data
+    },
+
+    /** Tək işçi ↔ komanda rejimi. Server rejimə görə dəvəti açır. */
+    switchMode: async (mode: BusinessMode): Promise<Business> => {
+        const { data } = await apiClient.post<Business>('/business/mode', {
+            business_type: mode,
+        })
         return data
     }
 }

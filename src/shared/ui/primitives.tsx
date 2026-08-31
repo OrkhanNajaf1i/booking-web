@@ -184,7 +184,15 @@ export function PageHeader({
         )}
         {meta}
       </div>
-      {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
+      {/* Telefonda hərəkət sahəsi öz sətrinə düşür və daralmalıdır:
+          `shrink-0` qalsa içindəki yana sürüşən zolaq başlığı
+          genişləndirir və BÜTÜN səhifə sağa-sola gedir. Masaüstündə
+          düymələr kiçikdir, ora əvvəlki davranış qalır. */}
+      {actions && (
+        <div className="flex min-w-0 max-w-full items-center gap-2 sm:shrink-0">
+          {actions}
+        </div>
+      )}
     </header>
   );
 }

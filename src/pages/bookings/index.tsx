@@ -98,14 +98,19 @@ export default function BookingsPage() {
              başlıqla eyni ağırlıqda görünürdü. */
           /* Telefonda beş süzgəc bir sətrə sığmır: sonuncular kəsilirdi.
              Yana sürüşən zolaq həm sığdırır, həm də seqment görünüşünü
-             saxlayır — sətri qatlamaq idarəni dağıdardı. */
-          <div className="scroll-thin -mx-4 max-w-full overflow-x-auto px-4 sm:mx-0 sm:px-0">
+             saxlayır — sətri qatlamaq idarəni dağıdardı.
+
+             Zolaq öz sərhədindən kənara çıxmır (mənfi kənar boşluq
+             yoxdur): çıxsaydı sürüşən səhifənin özü olardı. */
+          <div className="scroll-thin w-full max-w-full overflow-x-auto">
             <div className="inline-flex gap-0.5 rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
               {FILTERS.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => setFilter(option.value)}
-                  className={`rounded-[6px] px-3 py-1.5 text-sm font-medium transition-colors ${
+                  /* Telefonda barmaq üçün 40 piksel (WCAG 2.5.8);
+                     masaüstündə əvvəlki yığcam ölçü qalır. */
+                  className={`inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-[6px] px-3 text-sm font-medium transition-colors sm:h-8 ${
                     filter === option.value
                       ? "bg-white text-slate-900 shadow-xs dark:bg-slate-900 dark:text-white"
                       : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"

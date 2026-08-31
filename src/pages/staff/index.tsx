@@ -19,7 +19,13 @@ import {
 } from '@/entities/staff/api/staffApi';
 import { extractErrorMessage } from '@/shared/api/errors';
 import { PhoneAction } from '@/shared/ui/PhoneAction';
-import { useBusinessQuery } from '@/entities/business';
+import {
+  businessApi,
+  BUSINESS_MODE,
+  useBusinessQuery,
+  type BusinessMode,
+} from '@/entities/business';
+import { Button, Card, Dialog } from '@/shared/ui/primitives';
 
 export default function StaffPage() {
   const queryClient = useQueryClient();
@@ -27,9 +33,29 @@ export default function StaffPage() {
   const { data: business } = useBusinessQuery();
 
   // Tək işləyən həkim/bərbər üçün "komanda" anlayışı yoxdur — o, özü
-  // xidmət göstərəndir. Ekran buna görə fərqli danışır, amma dəvət
-  // imkanı qalır: adam işçi götürsə komandaya çevrilə bilər.
-  const isSolo = business?.business_type === 'solo_practitioner';
+  // xidmət göstərəndir. Ona görə bu rejimdə dəvət düyməsi yoxdur:
+  // ekranın özü "tək işləyirsiniz" yazırsa, yanında işçi dəvəti
+  // təklif etmək ekranı öz sözünə zidd edir.
+  //
+  // Amma yol bağlanmır — bərbər ikinci bərbər götürə bilər. Keçid
+  // ayrıca, açıq addımdır; server də dəvəti yalnız komanda rejimində
+  // qəbul edir.
+  const isSolo = business?.business_type === BUSINESS_MODE.solo;
+
+  const switchMode = useMutation({
+    mutationFn: (mode: BusinessMode) => businessApi.switchMode(mode),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(['business'], updated);
+      queryClient.invalidateQueries({ queryKey: ['business'] });
+      toast.success(
+        updated.business_type === BUSINESS_MODE.team
+          ? 'Komanda rejimi açıldı — indi işçi dəvət edə bilərsiniz'
+          : 'Tək iş rejiminə keçdiniz',
+      );
+    },
+    onError: (error) =>
+      toast.error(extractErrorMessage(error, 'Rejim dəyişdirilmədi')),
+  });
 
   const { data: staff = [], isLoading } = useQuery({
     queryKey: ['staff', 'list'],
@@ -63,13 +89,15 @@ export default function StaffPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => setInviteOpen(true)}
-          className="inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5"
-        >
-          <UserPlus size={15} />
-          {isSolo ? 'Komandaya işçi əlavə et' : 'İşçi dəvət et'}
-        </button>
+        {!isSolo && (
+          <button
+            onClick={() => setInviteOpen(true)}
+            className="inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5"
+          >
+            <UserPlus size={15} />
+            İşçi dəvət et
+          </button>
+        )}
       </header>
 
       {isLoading && <p className="text-sm text-slate-500">Yüklənir…</p>}
@@ -109,8 +137,100 @@ export default function StaffPage() {
         </section>
       )}
 
+      <ModeCard
+        solo={isSolo}
+        activeCount={active.length}
+        busy={switchMode.isPending}
+        onSwitch={switchMode.mutate}
+      />
+
       {inviteOpen && <InviteDialog onClose={() => setInviteOpen(false)} />}
     </div>
+  );
+}
+
+// ─── Rejim keçidi ────────────────────────────────────────────
+
+/**
+ * Tək iş ↔ komanda.
+ *
+ * Sakit, ikinci dərəcəli bölmədir: gündəlik iş deyil, ildə bir dəfə
+ * olan qərardır. Komandadan geri qayıtmaq yalnız sahib tək qalanda
+ * mümkündür — server də eyni qaydanı tətbiq edir.
+ */
+function ModeCard({
+  solo,
+  activeCount,
+  busy,
+  onSwitch,
+}: {
+  solo: boolean;
+  activeCount: number;
+  busy: boolean;
+  onSwitch: (mode: BusinessMode) => void;
+}) {
+  const [confirming, setConfirming] = useState(false);
+
+  if (!solo && activeCount > 1) return null;
+
+  return (
+    <Card className="flex flex-wrap items-center justify-between gap-3">
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-slate-900 dark:text-white">
+          {solo ? 'İşçi götürmüsünüz?' : 'Komandada yalnız sizsiniz'}
+        </p>
+        <p className="mt-0.5 text-xs text-slate-500">
+          {solo
+            ? 'Komanda rejimində işçi dəvət edir, hər birinə ayrıca qrafik təyin edirsiniz.'
+            : 'Tək iş rejimində ekran sadələşir, randevular birbaşa sizin adınıza gəlir.'}
+        </p>
+      </div>
+
+      <Button
+        onClick={() =>
+          solo ? setConfirming(true) : onSwitch(BUSINESS_MODE.solo)
+        }
+        loading={busy}
+        icon={solo ? <UserPlus size={15} /> : undefined}
+      >
+        {solo ? 'Komandaya keç' : 'Tək iş rejiminə qayıt'}
+      </Button>
+
+      {confirming && (
+        <Dialog
+          title="Komanda rejiminə keçilsin?"
+          onClose={() => setConfirming(false)}
+          footer={
+            <>
+              <Button onClick={() => setConfirming(false)}>İmtina</Button>
+              <Button
+                variant="primary"
+                loading={busy}
+                onClick={() => {
+                  onSwitch(BUSINESS_MODE.team);
+                  setConfirming(false);
+                }}
+              >
+                Keç
+              </Button>
+            </>
+          }
+        >
+          <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+            <p>Bundan sonra:</p>
+            <ul className="list-disc space-y-1 pl-4 text-xs">
+              <li>işçi dəvət edə bilirsiniz;</li>
+              <li>hər işçinin öz iş qrafiki olur;</li>
+              <li>müştəri randevu yaradarkən mütəxəssis seçir.</li>
+            </ul>
+            <p className="text-xs text-slate-500">
+              Sizin randevularınız və qrafikiniz olduğu kimi qalır. Tək
+              qalsanız geri qayıtmaq mümkündür.
+            </p>
+          </div>
+        </Dialog>
+      )}
+    </Card>
   );
 }
 

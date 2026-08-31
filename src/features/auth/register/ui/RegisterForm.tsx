@@ -57,7 +57,15 @@ export function RegisterForm() {
           type="tel"
           autoComplete="tel"
           placeholder="+994 50 123 45 67"
-          {...register('phone', { required: 'Nömrəni yazın' })}
+          {...register('phone', {
+            required: 'Nömrəni yazın',
+            // Nömrə müştərinin əsas əlaqə yoludur: paneldə üzərinə
+            // klik edəndə zəng gedir. Yoxlanmasa bu sahədə e-poçt da
+            // qalır və "zəng et" heç vaxt işləmir.
+            validate: (value: string) =>
+              /^[+\d][\d\s()-]{8,20}$/.test(value.trim()) ||
+              'Nömrəni rəqəmlərlə yazın: +994 50 123 45 67',
+          })}
         />
         <FieldError message={errors.phone?.message} />
       </div>
