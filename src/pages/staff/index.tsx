@@ -50,7 +50,7 @@ export default function StaffPage() {
   const inactive = staff.filter((member) => member.status !== 'active');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -65,7 +65,7 @@ export default function StaffPage() {
 
         <button
           onClick={() => setInviteOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800"
+          className="inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5"
         >
           <UserPlus size={15} />
           {isSolo ? 'Komandaya işçi əlavə et' : 'İşçi dəvət et'}
@@ -87,7 +87,7 @@ export default function StaffPage() {
         </div>
       )}
 
-      <div className="space-y-3">
+      <div className="space-y-2.5 sm:space-y-3">
         {active.map((member) => (
           <StaffCard
             key={member.id}
@@ -163,7 +163,7 @@ function StaffCard({
             {member.email && (
               <a
                 href={`mailto:${member.email}`}
-                className="truncate text-xs text-slate-500 transition-colors hover:text-brand-700"
+                className="inline-flex min-h-7 items-center truncate text-xs text-slate-500 transition-colors hover:text-brand-700"
               >
                 {member.email}
               </a>
@@ -267,7 +267,7 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
 
             <button
               onClick={onClose}
-              className="w-full rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800"
+              className="w-full h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5"
             >
               Bağla
             </button>
@@ -332,7 +332,7 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
               <button
                 onClick={() => invite.mutate()}
                 disabled={!email.trim() || invite.isPending}
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
+                className="inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5 disabled:opacity-50"
               >
                 {invite.isPending && (
                   <Loader2 size={14} className="animate-spin" />

@@ -10,7 +10,7 @@ export const DashboardPage = () => {
   const { data: business } = useBusinessQuery();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <PageHeader
         title={business?.name ?? 'Xoş gəldiniz'}
         description={`${formatDateWithWeekday(new Date())} — biznesin cari vəziyyəti.`}
@@ -18,7 +18,7 @@ export const DashboardPage = () => {
 
       <StatsOverview />
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-2.5 sm:gap-4 lg:grid-cols-2">
         <TodaySchedule />
         <PendingBookings />
       </div>

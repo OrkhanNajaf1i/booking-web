@@ -51,7 +51,6 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50">
       <div className="max-w-lg w-full p-8">
-        {/* Geri düyməsi */}
         <button
           onClick={() => setType(null)}
           className="mb-6 text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"

@@ -187,7 +187,7 @@ export default function SchedulePage() {
           <select
             value={staffId}
             onChange={(event) => setStaffId(event.target.value)}
-            className="min-w-56 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+            className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm sm:h-9.5 sm:w-auto sm:min-w-56 dark:border-slate-700 dark:bg-slate-900"
           >
             {staff.map((member) => (
               <option key={member.id} value={member.id}>
@@ -216,14 +216,14 @@ export default function SchedulePage() {
                 key={day.day_of_week}
                 className="flex flex-wrap items-center gap-x-6 gap-y-3 px-5 py-4"
               >
-                <label className="flex w-44 shrink-0 items-center gap-2.5">
+                <label className="flex min-h-11 w-44 shrink-0 items-center gap-2.5 sm:min-h-0">
                   <input
                     type="checkbox"
                     checked={day.is_active}
                     onChange={(event) =>
                       updateDay(day.day_of_week, { is_active: event.target.checked })
                     }
-                    className="h-4 w-4 rounded border-slate-300 accent-brand-700"
+                    className="size-5 shrink-0 rounded border-slate-300 accent-brand-700 sm:size-4"
                   />
                   <span
                     className={`text-sm font-medium ${
@@ -259,7 +259,7 @@ export default function SchedulePage() {
                 </div>
 
                 {/* Nahar fasiləsi — söndürülə bilər */}
-                <label className="flex items-center gap-2">
+                <label className="flex min-h-11 items-center gap-2 sm:min-h-0">
                   <input
                     type="checkbox"
                     checked={day.break_enabled}
@@ -267,7 +267,7 @@ export default function SchedulePage() {
                     onChange={(event) =>
                       updateDay(day.day_of_week, { break_enabled: event.target.checked })
                     }
-                    className="h-4 w-4 rounded border-slate-300 accent-brand-700 disabled:opacity-40"
+                    className="size-5 shrink-0 rounded border-slate-300 accent-brand-700 disabled:opacity-40 sm:size-4"
                   />
                   <Coffee size={14} className="text-slate-500" />
                   <span className="text-xs text-slate-500">Nahar</span>
@@ -303,7 +303,7 @@ export default function SchedulePage() {
           <button
             onClick={() => saveWeek.mutate()}
             disabled={saveWeek.isPending || !staffId}
-            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
+            className="inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5 disabled:opacity-50"
           >
             {saveWeek.isPending ? (
               <Loader2 size={14} className="animate-spin" />
@@ -447,7 +447,6 @@ export default function SchedulePage() {
             </div>
           </div>
 
-          {/* Canlı nümunə */}
           <div className="border-t border-slate-100 px-5 py-4 dark:border-slate-800">
             <p className="text-xs font-medium text-slate-500">
               Nümunə — müştəri belə görəcək:
@@ -469,7 +468,7 @@ export default function SchedulePage() {
             <button
               onClick={() => saveSettings.mutate()}
               disabled={saveSettings.isPending}
-              className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
+              className="inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5 disabled:opacity-50"
             >
               {saveSettings.isPending ? (
                 <Loader2 size={14} className="animate-spin" />
@@ -532,12 +531,12 @@ function ToggleField({
   onChange: (value: boolean) => void;
 }) {
   return (
-    <label className="flex items-start gap-3">
+    <label className="flex min-h-11 items-start gap-3 py-1 sm:min-h-0 sm:py-0">
       <input
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
-        className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-brand-700"
+        className="mt-0.5 size-5 shrink-0 rounded border-slate-300 accent-brand-700 sm:size-4"
       />
       <span>
         <span className="block text-sm font-medium text-slate-900 dark:text-white">

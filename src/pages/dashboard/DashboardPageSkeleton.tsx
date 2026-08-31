@@ -4,7 +4,6 @@ import { Skeleton } from '@/shared/ui/skeleton';
 export function DashboardPageSkeleton() {
   return (
     <div className="space-y-8">
-      {/* Page header */}
       <div className="flex items-center justify-between">
         <div className="space-y-2">
           <Skeleton className="h-7 w-60" />
@@ -13,12 +12,10 @@ export function DashboardPageSkeleton() {
         <Skeleton className="hidden h-9 w-36 rounded-lg sm:block" />
       </div>
 
-      {/* Stats cards */}
       <StatsOverviewSkeleton />
 
       {/* Bottom section: pending bookings + today's schedule */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Pending bookings */}
         <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
           <div className="mb-4 flex items-center justify-between">
             <Skeleton className="h-5 w-44" />
@@ -41,7 +38,6 @@ export function DashboardPageSkeleton() {
           </div>
         </div>
 
-        {/* Today's schedule */}
         <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
           <div className="mb-4 flex items-center justify-between">
             <Skeleton className="h-5 w-40" />

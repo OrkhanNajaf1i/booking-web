@@ -24,7 +24,7 @@ export function CustomerRow({ customer }: CustomerRowProps) {
         {email ? (
           <a
             href={`mailto:${email}`}
-            className="text-sm text-slate-600 transition-colors hover:text-brand-700 dark:text-slate-300"
+            className="inline-flex min-h-7 items-center text-sm text-slate-600 transition-colors hover:text-brand-700 dark:text-slate-300"
           >
             {email}
           </a>

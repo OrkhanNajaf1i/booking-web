@@ -23,7 +23,6 @@ export function CustomerTableSkeleton({ rows = 8 }: CustomerTableSkeletonProps) 
           <tbody className="bg-white divide-y divide-slate-200">
             {Array.from({ length: rows }).map((_, i) => (
               <tr key={i}>
-                {/* Name + avatar */}
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <Skeleton className="h-8 w-8 shrink-0 rounded-full" />
@@ -33,23 +32,18 @@ export function CustomerTableSkeleton({ rows = 8 }: CustomerTableSkeletonProps) 
                     </div>
                   </div>
                 </td>
-                {/* Email */}
                 <td className="px-4 py-3">
                   <Skeleton className="h-4 w-36" />
                 </td>
-                {/* Phone */}
                 <td className="px-4 py-3">
                   <Skeleton className="h-4 w-24" />
                 </td>
-                {/* Status badge */}
                 <td className="px-4 py-3">
                   <Skeleton className="h-5 w-16 rounded-full" />
                 </td>
-                {/* Bookings count */}
                 <td className="px-4 py-3 text-center">
                   <Skeleton className="mx-auto h-4 w-8" />
                 </td>
-                {/* Notes */}
                 <td className="px-4 py-3">
                   <Skeleton className="h-4 w-32" />
                 </td>
@@ -59,7 +53,6 @@ export function CustomerTableSkeleton({ rows = 8 }: CustomerTableSkeletonProps) 
         </table>
       </div>
 
-      {/* Footer */}
       <div className="border-t border-slate-200 bg-slate-50 px-4 py-3">
         <Skeleton className="h-4 w-48" />
       </div>

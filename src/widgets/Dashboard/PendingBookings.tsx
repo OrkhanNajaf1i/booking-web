@@ -45,7 +45,7 @@ export function PendingBookings() {
         {businessId && bookings.length > 0 && (
           <Link
             to={`/business/${businessId}/bookings`}
-            className="ml-auto text-xs font-medium text-brand-700 transition-colors hover:text-brand-800 dark:text-brand-400"
+            className="ml-auto inline-flex min-h-8 items-center text-xs font-medium text-brand-700 transition-colors hover:text-brand-800 dark:text-brand-400"
           >
             Hamısına bax →
           </Link>

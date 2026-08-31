@@ -154,7 +154,8 @@ export function PhoneAction({
         aria-haspopup="menu"
         aria-expanded={open}
         className={cn(
-          'group inline-flex items-center gap-1.5 rounded-md py-0.5 font-medium transition-colors',
+          // Telefonda nömrə barmaqla basılır — 24 piksellik sətir azdır.
+          'group inline-flex min-h-10 items-center gap-1.5 rounded-md py-0.5 font-medium transition-colors sm:min-h-0',
           'text-slate-900 hover:text-brand-700 dark:text-slate-100 dark:hover:text-brand-400',
           compact ? 'text-sm' : 'text-sm',
         )}

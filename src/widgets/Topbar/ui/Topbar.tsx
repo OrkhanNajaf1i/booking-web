@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDown, LogOut } from 'lucide-react';
+import { ChevronDown, LogOut, Menu } from 'lucide-react';
 
 import { NotificationBell } from './NotificationBell';
 import { useBusinessQuery } from '@/entities/business';
@@ -34,7 +34,13 @@ function useSessionEmail(): string | null {
   return claims?.email ?? null;
 }
 
-export function Topbar() {
+interface TopbarProps {
+  /** Telefonda yan paneli açır. */
+  onOpenMenu?: () => void;
+  showMenuButton?: boolean;
+}
+
+export function Topbar({ onOpenMenu, showMenuButton = false }: TopbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { data: business } = useBusinessQuery();
@@ -47,11 +53,31 @@ export function Topbar() {
   };
 
   return (
-    <header className="flex h-15 shrink-0 items-center justify-between border-b border-slate-200 bg-card px-5 dark:border-slate-800 sm:px-6">
-      {/* Sol: biznesin ixtisası — hansı hesabda olduğunu xatırladır */}
-      <span className="truncate text-sm font-medium text-slate-500">
-        {business?.service_category || business?.category_name || ''}
-      </span>
+    <header className="flex h-15 shrink-0 items-center justify-between gap-2 border-b border-slate-200 bg-card px-4 sm:px-6 dark:border-slate-800">
+      <div className="flex min-w-0 items-center gap-1">
+        {showMenuButton && (
+          <button
+            onClick={onOpenMenu}
+            aria-label="Menyunu aç"
+            className="-ml-2 rounded-lg p-2.5 text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+          >
+            <Menu size={20} />
+          </button>
+        )}
+
+        {/*
+          Telefonda biznesin ADI göstərilir, masaüstündə ixtisas.
+          Səbəb: dar ekranda yan panel gizlidir və hansı hesabda
+          olduğunu başqa heç nə demir; masaüstündə isə ad onsuz da
+          sağ küncdə görünür.
+        */}
+        <span className="truncate text-sm font-medium text-slate-600 sm:hidden dark:text-slate-300">
+          {business?.name ?? ''}
+        </span>
+        <span className="hidden truncate text-sm font-medium text-slate-500 sm:block">
+          {business?.service_category || business?.category_name || ''}
+        </span>
+      </div>
 
       <div className="flex items-center gap-1">
         <NotificationBell />
@@ -67,11 +93,11 @@ export function Topbar() {
               {getInitials(business?.name)}
             </span>
 
-            <span className="hidden max-w-40 truncate text-sm font-medium text-slate-700 dark:text-slate-200 sm:block">
+            <span className="hidden max-w-40 truncate text-sm font-medium text-slate-700 sm:block dark:text-slate-200">
               {business?.name ?? 'Hesab'}
             </span>
 
-            <ChevronDown size={14} className="shrink-0 text-slate-400" />
+            <ChevronDown size={14} className="hidden shrink-0 text-slate-400 sm:block" />
           </button>
 
           {menuOpen && (

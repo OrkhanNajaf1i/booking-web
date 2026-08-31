@@ -62,7 +62,6 @@ export function UpdateBusinessForm() {
       className="space-y-4"
     >
 
-      {/* Biznes adı */}
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1">
           Biznes adı
@@ -81,7 +80,6 @@ export function UpdateBusinessForm() {
         )}
       </div>
 
-      {/* Telefon */}
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1">
           Telefon
