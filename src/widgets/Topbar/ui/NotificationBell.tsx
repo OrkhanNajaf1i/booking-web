@@ -60,7 +60,6 @@ export function NotificationBell() {
           </span>
         )}
 
-        {/* Canlı bağlantı göstəricisi */}
         <span
           className={`absolute bottom-1 right-1.5 h-1.5 w-1.5 rounded-full ${
             connected ? 'bg-success-700' : 'bg-slate-300'

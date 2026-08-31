@@ -447,7 +447,6 @@ export default function SchedulePage() {
             </div>
           </div>
 
-          {/* Canlı nümunə */}
           <div className="border-t border-slate-100 px-5 py-4 dark:border-slate-800">
             <p className="text-xs font-medium text-slate-500">
               Nümunə — müştəri belə görəcək:

@@ -129,7 +129,6 @@ export function AuthShell({
       {/* ── Forma tərəfi ─────────────────────────────────────── */}
       <main className="flex items-center justify-center px-5 py-10 sm:px-8 sm:py-12">
         <div className="w-full max-w-[400px]">
-          {/* Dar ekranda marka yuxarıda görünür */}
           <div className="mb-8 lg:hidden">
             <BrandMark />
           </div>

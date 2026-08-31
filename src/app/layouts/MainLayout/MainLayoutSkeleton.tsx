@@ -10,9 +10,7 @@ export function MainLayoutSkeleton() {
       <div className="flex flex-1 flex-col overflow-hidden">
         <TopbarSkeleton />
 
-        {/* Content area placeholder */}
         <main className="flex-1 overflow-y-auto p-6 lg:p-8">
-          {/* Page header */}
           <div className="mb-8 flex items-start justify-between">
             <div className="space-y-2">
               <Skeleton className="h-7 w-56" />
@@ -21,7 +19,6 @@ export function MainLayoutSkeleton() {
             <Skeleton className="h-9 w-36 rounded-lg" />
           </div>
 
-          {/* Stat cards */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div
@@ -38,7 +35,6 @@ export function MainLayoutSkeleton() {
             ))}
           </div>
 
-          {/* Secondary blocks */}
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
             <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
               <Skeleton className="mb-4 h-5 w-40" />
