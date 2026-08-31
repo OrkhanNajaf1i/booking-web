@@ -16,6 +16,8 @@ import Settings from '@/pages/settings/index';
 import BookingsPage from '@/pages/bookings';
 import SchedulePage from '@/pages/schedule';
 import StaffPage from '@/pages/staff';
+import ServicesPage from '@/pages/services';
+import LocationsPage from '@/pages/locations';
 
 export const routes: RouteObject[] = [
     {
@@ -74,11 +76,11 @@ export const routes: RouteObject[] = [
                             },
                             {
                                 path: "services",
-                                element: (<div>Services</div>)
+                                element: (<ServicesPage />)
                             },
                             {
                                 path: "locations",
-                                element: (<div>Locations</div>)
+                                element: (<LocationsPage />)
                             },
                             {
                                 path: "settings/profile",
