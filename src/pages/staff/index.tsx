@@ -159,7 +159,13 @@ function StaffCard({
         </p>
       </div>
 
-      {!inactive && onDeactivate && (
+      {member.is_owner && (
+        <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+          Sahib
+        </span>
+      )}
+
+      {!inactive && onDeactivate && !member.is_owner && (
         <button
           onClick={onDeactivate}
           disabled={busy}

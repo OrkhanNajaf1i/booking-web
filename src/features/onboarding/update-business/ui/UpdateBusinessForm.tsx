@@ -1,10 +1,11 @@
 // features/update-business/ui/UpdateBusinessForm.tsx
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useBusinessQuery } from '@/entities/business/model/businessQuery';
 import { useUpdateBusiness } from '../model/useUpdateBusiness';
+import { ProfessionPicker } from '@/shared/ui/ProfessionPicker';
 
 // ─── Schema ──────────────────────────────────────────────
 const schema = z.object({
@@ -19,9 +20,14 @@ const schema = z.object({
     .min(1, 'Telefon nömrəsi tələb olunur')
     .regex(/^\+?[0-9\s\-]{7,15}$/, 'Düzgün telefon nömrəsi daxil edin'),
 
-  industry: z
+  // Kateqoriya sabit siyahıdandır — müştəri tərəfdəki qruplaşdırma
+  // buna baxır, ona görə boş qala bilməz.
+  category_slug: z
     .string()
-    .min(1, 'Sənaye sahəsi tələb olunur'),
+    .min(1, 'Kateqoriya seçin'),
+
+  // İxtisas sərbəst mətndir və istəyə bağlıdır.
+  service_category: z.string().max(100, 'Maksimum 100 simvol'),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -33,19 +39,28 @@ export function UpdateBusinessForm() {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      name:     business?.name     ?? '',
-      phone:    business?.phone    ?? '',
-      industry: business?.industry ?? '',
+    values: {
+      name:             business?.name             ?? '',
+      phone:            business?.phone            ?? '',
+      category_slug:    business?.category_slug    ?? '',
+      service_category: business?.service_category ?? '',
     },
   });
 
   return (
-    <form onSubmit={handleSubmit((dto) => mutate({ ...dto, phone: Number(dto.phone) }))} className="space-y-4">
+    <form
+      onSubmit={handleSubmit((dto) =>
+        // Telefon backend-də mətn kimi saxlanılır; Number-ə çevirmək
+        // "+994" prefiksini itirirdi.
+        mutate({ ...dto, industry: dto.category_slug }),
+      )}
+      className="space-y-4"
+    >
 
       {/* Biznes adı */}
       <div>
@@ -85,22 +100,41 @@ export function UpdateBusinessForm() {
         )}
       </div>
 
+      {/* Peşə — sabit siyahı, amma öz sözü ilə də yazıla bilər */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Sənaye sahəsi
+          Peşəniz
         </label>
-        <input
-          {...register('industry')}
-          placeholder="məs., Barber, Beauty & Nail, Fitness"
-          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors
-            ${errors.industry
-              ? 'border-red-400 focus:ring-red-300'
-              : 'border-gray-300 focus:ring-blue-500'
-            }`}
+        <Controller
+          control={control}
+          name="category_slug"
+          render={({ field: categoryField }) => (
+            <Controller
+              control={control}
+              name="service_category"
+              render={({ field: customField }) => (
+                <ProfessionPicker
+                  value={{
+                    categorySlug: categoryField.value,
+                    customName: customField.value ?? '',
+                  }}
+                  onChange={(next) => {
+                    categoryField.onChange(next.categorySlug);
+                    customField.onChange(next.customName);
+                  }}
+                />
+              )}
+            />
+          )}
         />
-        {errors.industry && (
-          <p className="mt-1 text-sm text-red-500">{errors.industry.message}</p>
+        {errors.category_slug && (
+          <p className="mt-1 text-sm text-red-500">
+            {errors.category_slug.message}
+          </p>
         )}
+        <p className="mt-1 text-xs text-gray-500">
+          Siyahıdan seçin, yoxdursa özünüz yazın.
+        </p>
       </div>
 
       <button
