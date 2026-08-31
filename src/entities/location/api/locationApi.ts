@@ -56,8 +56,23 @@ export const locationApi = {
     await apiClient.put(`/locations/${id}`, dto);
   },
 
-  /** Soft delete — filial deaktiv olunur. */
+  /** Yumşaq silmə — filial deaktiv olur, məlumatı qalır. */
   deactivate: async (id: string): Promise<void> => {
     await apiClient.delete(`/locations/${id}`);
+  },
+
+  /** Deaktiv filialı geri qaytarır. */
+  activate: async (id: string): Promise<void> => {
+    await apiClient.post(`/locations/${id}/activate`);
+  },
+
+  /**
+   * Həmişəlik silmə.
+   *
+   * Filiala bağlı randevu və ya işçi varsa server 409 qaytarır —
+   * keçmiş randevunun "harada olub" məlumatı itməməlidir.
+   */
+  remove: async (id: string): Promise<void> => {
+    await apiClient.delete(`/locations/${id}/permanent`);
   },
 };
