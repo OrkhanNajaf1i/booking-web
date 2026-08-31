@@ -40,10 +40,16 @@ const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
     'dark:border-danger-700/50 dark:bg-transparent dark:text-danger-600 dark:hover:bg-danger-700/10',
 };
 
+/*
+  Ölçülər telefonda böyüyür.
+
+  Barmaq siçandan kobuddur: 32 piksellik düyməni basmaq üçün adam
+  diqqətlə nişan almalı olur. Telefonda hədd 40 pikseldir, masaüstündə
+  isə sıxlıq daha dəyərlidir — ona görə `sm:` ilə geri kiçilir.
+*/
 const BUTTON_SIZES: Record<ButtonSize, string> = {
-  // Toxunma sahəsi 32 pikseldən aşağı düşməməlidir.
-  sm: 'h-8 px-3 text-xs',
-  md: 'h-9.5 px-4 text-sm',
+  sm: 'h-10 px-3 text-xs sm:h-8',
+  md: 'h-10 px-4 text-sm sm:h-9.5',
   lg: 'h-11 px-5 text-sm',
 };
 

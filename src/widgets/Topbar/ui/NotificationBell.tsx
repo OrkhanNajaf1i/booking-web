@@ -49,13 +49,13 @@ export function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
+        className="relative flex size-10 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 sm:size-9 dark:hover:bg-slate-800"
         aria-label="Bildirişlər"
       >
         <Bell size={18} />
 
         {unread > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger-700 px-1 text-[10px] font-semibold text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-danger-700 px-1 text-[11px] font-semibold text-white">
             {unread > 9 ? '9+' : unread}
           </span>
         )}

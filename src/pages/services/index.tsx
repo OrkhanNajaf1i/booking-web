@@ -19,6 +19,7 @@ import {
   type ServiceDto,
 } from '@/entities/service/api/serviceApi';
 import { extractErrorMessage } from '@/shared/api/errors';
+import { Button } from '@/shared/ui/primitives';
 
 export default function ServicesPage() {
   const queryClient = useQueryClient();
@@ -58,7 +59,7 @@ export default function ServicesPage() {
 
         <button
           onClick={() => setCreating(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800"
+          className="inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5"
         >
           <Plus size={15} />
           Xidmət əlavə et
@@ -159,20 +160,12 @@ function ServiceCard({
 
       {!inactive && (
         <div className="mt-3 flex gap-2 border-t border-slate-100 pt-3 dark:border-slate-800">
-          <button
-            onClick={onEdit}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-          >
-            <Pencil size={12} />
+          <Button size="sm" icon={<Pencil size={12} />} onClick={onEdit}>
             Düzəliş
-          </button>
-          <button
-            onClick={onDeactivate}
-            disabled={busy}
-            className="rounded-lg px-3 py-1.5 text-xs text-slate-500 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:hover:bg-slate-800"
-          >
+          </Button>
+          <Button size="sm" variant="ghost" disabled={busy} onClick={onDeactivate}>
             Deaktiv et
-          </button>
+          </Button>
         </div>
       )}
     </article>
@@ -320,7 +313,7 @@ function ServiceDialog({
           <button
             onClick={() => save.mutate()}
             disabled={!canSave || save.isPending}
-            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
+            className="inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5 disabled:opacity-50"
           >
             {save.isPending && <Loader2 size={14} className="animate-spin" />}
             Yadda saxla

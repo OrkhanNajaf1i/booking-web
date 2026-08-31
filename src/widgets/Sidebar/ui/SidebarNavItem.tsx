@@ -6,9 +6,10 @@ import type { NavItem } from '../model/types';
 interface Props {
   item: NavItem;
   collapsed: boolean;
+  onNavigate?: () => void;
 }
 
-export function SidebarNavItem({ item, collapsed }: Props) {
+export function SidebarNavItem({ item, collapsed, onNavigate }: Props) {
   const { businessId } = useParams();
   const to = item.path(businessId ?? '');
 
@@ -16,9 +17,12 @@ export function SidebarNavItem({ item, collapsed }: Props) {
     <NavLink
       to={to}
       title={item.label}
+      onClick={onNavigate}
       className={({ isActive }) =>
         clsx(
-          'group relative flex items-center gap-3 rounded-lg py-2 text-sm font-medium transition-colors',
+          // Telefonda barmaq üçün 44 piksel; masaüstündə sıxlıq
+          // daha dəyərlidir, ona görə geri kiçilir.
+          'group relative flex min-h-11 items-center gap-3 rounded-lg py-2 text-sm font-medium transition-colors sm:min-h-0',
           collapsed ? 'justify-center px-0' : 'px-3',
           isActive
             ? 'bg-brand-50 text-brand-800 dark:bg-brand-700/15 dark:text-brand-200'

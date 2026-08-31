@@ -4,9 +4,11 @@ import type { NavGroup } from '../model/types';
 interface Props {
   groups: NavGroup[];
   collapsed: boolean;
+  /** Telefonda keçiddən sonra çəkmə paneli bağlayır. */
+  onNavigate?: () => void;
 }
 
-export function SidebarNav({ groups, collapsed }: Props) {
+export function SidebarNav({ groups, collapsed, onNavigate }: Props) {
   return (
     <nav className="flex flex-col gap-6 px-3">
       {groups.map((group, index) => (
@@ -27,7 +29,12 @@ export function SidebarNav({ groups, collapsed }: Props) {
           )}
 
           {group.items.map((item) => (
-            <SidebarNavItem key={item.label} item={item} collapsed={collapsed} />
+            <SidebarNavItem
+              key={item.label}
+              item={item}
+              collapsed={collapsed}
+              onNavigate={onNavigate}
+            />
           ))}
         </div>
       ))}

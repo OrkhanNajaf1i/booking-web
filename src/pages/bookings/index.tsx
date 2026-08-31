@@ -96,20 +96,25 @@ export default function BookingsPage() {
         actions={
           /* Süzgəclər seqment kimi bir qutuda — ayrı-ayrı düymələr
              başlıqla eyni ağırlıqda görünürdü. */
-          <div className="flex flex-wrap gap-0.5 rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
-            {FILTERS.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => setFilter(option.value)}
-                className={`rounded-[6px] px-3 py-1.5 text-sm font-medium transition-colors ${
-                  filter === option.value
-                    ? "bg-white text-slate-900 shadow-xs dark:bg-slate-900 dark:text-white"
-                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
+          /* Telefonda beş süzgəc bir sətrə sığmır: sonuncular kəsilirdi.
+             Yana sürüşən zolaq həm sığdırır, həm də seqment görünüşünü
+             saxlayır — sətri qatlamaq idarəni dağıdardı. */
+          <div className="scroll-thin -mx-4 max-w-full overflow-x-auto px-4 sm:mx-0 sm:px-0">
+            <div className="inline-flex gap-0.5 rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
+              {FILTERS.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => setFilter(option.value)}
+                  className={`rounded-[6px] px-3 py-1.5 text-sm font-medium transition-colors ${
+                    filter === option.value
+                      ? "bg-white text-slate-900 shadow-xs dark:bg-slate-900 dark:text-white"
+                      : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </div>
         }
       />
