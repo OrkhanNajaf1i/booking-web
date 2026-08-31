@@ -13,15 +13,15 @@ import type { NavGroup } from './types';
 
 export const NAV_GROUPS: NavGroup[] = [
   {
-    title: 'Operations',
+    title: 'Əməliyyatlar',
     items: [
       {
-        label: 'Dashboard',
+        label: 'İdarə paneli',
         icon: LayoutDashboard,
         path: (id) => paths.dashboard(id),
       },
       {
-        label: 'Bookings',
+        label: 'Randevular',
         icon: CalendarDays,
         path: (id) => paths.bookings(id),
       },
@@ -33,45 +33,45 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    title: 'Customers',
+    title: 'Müştərilər',
     items: [
       {
-        label: 'Customers',
+        label: 'Müştərilər',
         icon: Users,
         path: (id) => paths.customers(id),
       },
     ],
   },
   {
-    title: 'Team',
+    title: 'Komanda',
     items: [
       {
-        label: 'Staff',
+        label: 'İşçilər',
         icon: UserCheck,
         path: (id) => paths.staff(id),
       },
     ],
   },
   {
-    title: 'Catalog',
+    title: 'Kataloq',
     items: [
       {
-        label: 'Services',
+        label: 'Xidmətlər',
         icon: Scissors,
         path: (id) => paths.services(id),
       },
       {
-        label: 'Locations',
+        label: 'Filiallar',
         icon: MapPin,
         path: (id) => paths.locations(id),
       },
     ],
   },
   {
-    title: 'Settings',
+    title: 'Ayarlar',
     items: [
       {
-        label: 'Settings',
+        label: 'Ayarlar',
         icon: Settings,
         path: (id) => paths.settingsProfile(id),
       },
