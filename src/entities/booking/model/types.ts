@@ -12,6 +12,9 @@ export interface Booking {
   id: string;
   business_id: string;
   customer_id: string;
+  /** Provayder siyahısında dolur — müştəriyə zəng etmək üçün. */
+  customer_name?: string;
+  customer_phone?: string;
   staff_id: string;
   service_id?: string;
   location_id?: string;

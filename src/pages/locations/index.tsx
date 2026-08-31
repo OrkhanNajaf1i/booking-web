@@ -16,6 +16,7 @@ import {
   type LocationDto,
 } from '@/entities/location/api/locationApi';
 import { LocationPicker } from '@/shared/ui/LocationPicker';
+import { PhoneAction } from '@/shared/ui/PhoneAction';
 import { extractErrorMessage } from '@/shared/api/errors';
 
 export default function LocationsPage() {
@@ -121,7 +122,9 @@ export default function LocationsPage() {
             </p>
 
             {location.phone && (
-              <p className="mt-0.5 text-xs text-slate-500">{location.phone}</p>
+              <div className="mt-1">
+                <PhoneAction phone={location.phone} />
+              </div>
             )}
 
             {location.latitude != null && (
