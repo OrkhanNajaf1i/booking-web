@@ -109,7 +109,9 @@ export function Card({
       className={cn(
         'rounded-xl border border-slate-200 bg-card shadow-xs',
         'dark:border-slate-800',
-        padded && 'p-5',
+        // Telefonda daxili boşluq daralır — 390 pikseldə 20 piksel
+        // çox yer aparır.
+        padded && 'p-4 sm:p-5',
         interactive &&
           'transition-shadow hover:shadow-md focus-within:shadow-md cursor-pointer',
         className,
@@ -172,13 +174,13 @@ export function PageHeader({
   meta?: ReactNode;
 }) {
   return (
-    <header className="flex flex-wrap items-start justify-between gap-4">
+    <header className="flex flex-wrap items-start justify-between gap-3 sm:gap-4">
       <div className="min-w-0">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+        <h1 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl dark:text-white">
           {title}
         </h1>
         {description && (
-          <p className="mt-1 max-w-2xl text-sm text-slate-500">{description}</p>
+          <p className="mt-1 max-w-2xl text-[13px] text-slate-500 sm:text-sm">{description}</p>
         )}
         {meta}
       </div>
@@ -201,7 +203,7 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-dashed border-slate-300 bg-white/50 px-6 py-14 text-center dark:border-slate-700 dark:bg-transparent">
+    <div className="rounded-xl border border-dashed border-slate-300 bg-white/50 px-5 py-10 text-center sm:px-6 sm:py-14 dark:border-slate-700 dark:bg-transparent">
       <div className="mx-auto flex size-11 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800">
         {icon}
       </div>
@@ -291,7 +293,7 @@ export function Dialog({
           wide ? 'max-w-lg' : 'max-w-md',
         )}
       >
-        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-800">
+        <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3.5 sm:px-5 sm:py-4 dark:border-slate-800">
           <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
             {title}
           </h2>
@@ -311,10 +313,10 @@ export function Dialog({
           </button>
         </div>
 
-        <div className="px-5 py-5">{children}</div>
+        <div className="px-4 py-4 sm:px-5 sm:py-5">{children}</div>
 
         {footer && (
-          <div className="flex justify-end gap-2 border-t border-slate-200 bg-slate-50/60 px-5 py-3.5 dark:border-slate-800 dark:bg-slate-900/40">
+          <div className="flex justify-end gap-2 border-t border-slate-200 bg-slate-50/60 px-4 py-3 sm:px-5 sm:py-3.5 dark:border-slate-800 dark:bg-slate-900/40">
             {footer}
           </div>
         )}

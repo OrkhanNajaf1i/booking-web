@@ -43,7 +43,7 @@ export const StatCard = ({ title, value, note, icon, tone }: StatCardProps) => {
   const theme = TONES[tone];
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-card p-5 shadow-xs transition-shadow hover:shadow-md dark:border-slate-800">
+    <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-card p-4 shadow-xs transition-shadow hover:shadow-md sm:p-5 dark:border-slate-800">
       {/* Küncdəki yumşaq ləkə — kartı tamamilə düz görünməkdən çıxarır */}
       <div
         aria-hidden="true"
@@ -55,8 +55,8 @@ export const StatCard = ({ title, value, note, icon, tone }: StatCardProps) => {
 
       <div className="relative flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-medium text-slate-500">{title}</p>
-          <p className="tabular mt-2 text-[28px] leading-none font-bold tracking-tight text-slate-900 dark:text-white">
+          <p className="text-[13px] font-medium text-slate-500 sm:text-sm">{title}</p>
+          <p className="tabular mt-1.5 text-2xl leading-none font-bold tracking-tight text-slate-900 sm:mt-2 sm:text-[28px] dark:text-white">
             {value}
           </p>
           {note && <p className="mt-2 text-xs text-slate-500">{note}</p>}
@@ -64,7 +64,7 @@ export const StatCard = ({ title, value, note, icon, tone }: StatCardProps) => {
 
         <span
           className={cn(
-            'grid size-10 shrink-0 place-items-center rounded-[10px]',
+            'grid size-9 shrink-0 place-items-center rounded-[10px] sm:size-10',
             theme.icon,
           )}
         >

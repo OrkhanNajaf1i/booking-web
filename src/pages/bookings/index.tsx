@@ -80,7 +80,7 @@ export default function BookingsPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <PageHeader
         title="Bronlar"
         meta={
@@ -129,7 +129,7 @@ export default function BookingsPage() {
         />
       )}
 
-      <div className="space-y-3">
+      <div className="space-y-2.5 sm:space-y-3">
         {bookings.map((booking) => {
           const meta = BOOKING_STATUS_META[booking.status];
           const isBusy = runAction.isPending;

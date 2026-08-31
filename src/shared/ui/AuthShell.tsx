@@ -127,17 +127,17 @@ export function AuthShell({
       </aside>
 
       {/* ── Forma tərəfi ─────────────────────────────────────── */}
-      <main className="flex items-center justify-center px-5 py-12 sm:px-8">
+      <main className="flex items-center justify-center px-5 py-10 sm:px-8 sm:py-12">
         <div className="w-full max-w-[400px]">
           {/* Dar ekranda marka yuxarıda görünür */}
           <div className="mb-8 lg:hidden">
             <BrandMark />
           </div>
 
-          <h1 className="text-[26px] font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-[22px] font-bold tracking-tight text-slate-900 sm:text-[26px] dark:text-white">
             {title}
           </h1>
-          <p className="mt-1.5 text-sm text-slate-500">{description}</p>
+          <p className="mt-1.5 text-[13px] text-slate-500 sm:text-sm">{description}</p>
 
           <div className="mt-7">{children}</div>
 

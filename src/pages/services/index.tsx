@@ -45,7 +45,7 @@ export default function ServicesPage() {
   const inactive = services.filter((item) => !item.is_active);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -79,7 +79,7 @@ export default function ServicesPage() {
         </div>
       )}
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
         {active.map((service) => (
           <ServiceCard
             key={service.id}
@@ -96,7 +96,7 @@ export default function ServicesPage() {
           <h2 className="text-sm font-semibold text-slate-500">
             Deaktiv ({inactive.length})
           </h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
             {inactive.map((service) => (
               <ServiceCard key={service.id} service={service} inactive />
             ))}

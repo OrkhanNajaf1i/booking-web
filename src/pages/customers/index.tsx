@@ -18,7 +18,7 @@ export default function CustomersPage() {
   const { data, isLoading, error } = useCustomers();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <PageHeader
         title="Müştərilər"
         description="Sizdə randevu almış adamlar. Nömrənin üzərinə basıb zəng edə və ya kopyalaya bilərsiniz."
