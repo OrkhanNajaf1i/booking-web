@@ -25,6 +25,7 @@ import {
   EmptyState,
   PageHeader,
 } from "@/shared/ui/primitives";
+import { PhoneAction } from "@/shared/ui/PhoneAction";
 
 const FILTERS: { label: string; value: BookingStatus | "all" }[] = [
   { label: "Hamısı", value: "all" },
@@ -139,13 +140,35 @@ export default function BookingsPage() {
             <Card as="article" key={booking.id} padded={false} className="p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="tabular text-sm font-semibold text-slate-900 dark:text-white">
+                  {/* Müştərinin adı başlıqdır: provayder əvvəlcə
+                      "kim gəlir" sualına cavab axtarır, vaxt ikinci
+                      dərəcəlidir. */}
+                  {booking.customer_name && (
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                      {booking.customer_name}
+                    </p>
+                  )}
+
+                  <p
+                    className={`tabular text-sm ${
+                      booking.customer_name
+                        ? "mt-0.5 text-slate-600 dark:text-slate-300"
+                        : "font-semibold text-slate-900 dark:text-white"
+                    }`}
+                  >
                     {formatRange(booking.start_time, booking.end_time)}
                   </p>
+
                   <p className="mt-0.5 text-xs text-slate-500">
                     {booking.duration_mins} dəq
                     {booking.notes ? ` · ${booking.notes}` : ""}
                   </p>
+
+                  {booking.customer_phone && (
+                    <div className="mt-1.5">
+                      <PhoneAction phone={booking.customer_phone} />
+                    </div>
+                  )}
 
                   {booking.status === "reschedule_proposed" &&
                     booking.proposed_start_time && (

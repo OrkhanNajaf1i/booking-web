@@ -18,6 +18,7 @@ import {
   type StaffRole,
 } from '@/entities/staff/api/staffApi';
 import { extractErrorMessage } from '@/shared/api/errors';
+import { PhoneAction } from '@/shared/ui/PhoneAction';
 import { useBusinessQuery } from '@/entities/business';
 
 export default function StaffPage() {
@@ -149,14 +150,26 @@ function StaffCard({
           {name}
         </p>
         <p className="truncate text-xs text-slate-500">
-          {[
-            STAFF_ROLE_LABELS[member.role] ?? member.role,
-            member.title,
-            member.email,
-          ]
+          {[STAFF_ROLE_LABELS[member.role] ?? member.role, member.title]
             .filter(Boolean)
             .join(' · ')}
         </p>
+
+        {/* Əlaqə sətri ayrıca: nömrə kliklənən olmalıdır, ona görə
+            digər mətnlərlə bir sətirdə birləşdirilmir. */}
+        {(member.phone || member.email) && (
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+            {member.phone && <PhoneAction phone={member.phone} />}
+            {member.email && (
+              <a
+                href={`mailto:${member.email}`}
+                className="truncate text-xs text-slate-500 transition-colors hover:text-brand-700"
+              >
+                {member.email}
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       {member.is_owner && (
