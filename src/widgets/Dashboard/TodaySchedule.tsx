@@ -4,6 +4,7 @@ import { CalendarClock } from 'lucide-react';
 import { bookingApi } from '@/entities/booking/api/bookingApi';
 import { BOOKING_STATUS_META } from '@/entities/booking/model/types';
 import { formatTimeRange } from '@/shared/lib/date';
+import { Badge } from '@/shared/ui/primitives';
 
 /** Günün başlanğıcı və sonu — yerli vaxtla. */
 function todayRange(): { from: string; to: string } {
@@ -36,48 +37,46 @@ export function TodaySchedule() {
     .sort((a, b) => a.start_time.localeCompare(b.start_time));
 
   return (
-    <section className="rounded-2xl border border-gray-100 bg-white">
-      <header className="flex items-center gap-2 border-b border-gray-100 px-5 py-3.5">
-        <CalendarClock size={16} className="text-gray-400" />
-        <h2 className="text-sm font-semibold text-gray-900">
+    <section className="overflow-hidden rounded-xl border border-slate-200 bg-card shadow-xs dark:border-slate-800">
+      <header className="flex items-center gap-2 border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
+        <CalendarClock size={15} className="text-slate-400" />
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
           Bu günün cədvəli
         </h2>
         {visible.length > 0 && (
-          <span className="ml-auto text-xs text-gray-400">
+          <span className="ml-auto text-xs text-slate-500">
             {visible.length} randevu
           </span>
         )}
       </header>
 
       {isLoading && (
-        <p className="px-5 py-8 text-center text-sm text-gray-400">Yüklənir…</p>
+        <p className="px-5 py-10 text-center text-sm text-slate-500">Yüklənir…</p>
       )}
 
       {!isLoading && visible.length === 0 && (
-        <p className="px-5 py-10 text-center text-sm text-gray-400">
+        <p className="px-5 py-12 text-center text-sm text-slate-500">
           Bu gün üçün randevu yoxdur
         </p>
       )}
 
-      <ul className="divide-y divide-gray-50">
+      <ul className="divide-y divide-slate-100 dark:divide-slate-800">
         {visible.map((booking) => {
           const meta = BOOKING_STATUS_META[booking.status];
 
           return (
             <li key={booking.id} className="flex items-center gap-4 px-5 py-3">
-              <span className="w-24 shrink-0 text-sm font-semibold text-gray-900 tabular-nums">
+              {/* Saatlar sütun kimi düzülməlidir — dəyişən enli
+                  rəqəmlər siyahını dalğalandırır. */}
+              <span className="tabular w-24 shrink-0 text-sm font-semibold text-slate-900 dark:text-white">
                 {formatTimeRange(booking.start_time, booking.end_time)}
               </span>
 
-              <span className="min-w-0 flex-1 truncate text-sm text-gray-600">
+              <span className="min-w-0 flex-1 truncate text-sm text-slate-600 dark:text-slate-300">
                 {booking.notes || `${booking.duration_mins} dəqiqəlik randevu`}
               </span>
 
-              <span
-                className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${meta.className}`}
-              >
-                {meta.label}
-              </span>
+              <Badge tone={meta.tone}>{meta.label}</Badge>
             </li>
           );
         })}

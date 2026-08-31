@@ -18,6 +18,7 @@ import {
   type StaffRole,
 } from '@/entities/staff/api/staffApi';
 import { extractErrorMessage } from '@/shared/api/errors';
+import { PhoneAction } from '@/shared/ui/PhoneAction';
 import { useBusinessQuery } from '@/entities/business';
 
 export default function StaffPage() {
@@ -52,10 +53,10 @@ export default function StaffPage() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             {isSolo ? 'Mütəxəssis' : 'İşçilər'}
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-slate-500">
             {isSolo
               ? 'Siz tək işləyirsiniz — randevular birbaşa sizin adınıza gəlir.'
               : 'Randevu qəbul edən mütəxəssislər. Hər birinin öz iş qrafiki olur.'}
@@ -64,22 +65,22 @@ export default function StaffPage() {
 
         <button
           onClick={() => setInviteOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-900"
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800"
         >
           <UserPlus size={15} />
           {isSolo ? 'Komandaya işçi əlavə et' : 'İşçi dəvət et'}
         </button>
       </header>
 
-      {isLoading && <p className="text-sm text-neutral-400">Yüklənir…</p>}
+      {isLoading && <p className="text-sm text-slate-500">Yüklənir…</p>}
 
       {!isLoading && active.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-neutral-200 p-12 text-center dark:border-neutral-800">
-          <Users size={28} className="mx-auto text-neutral-300" />
-          <p className="mt-3 text-sm text-neutral-500">
+        <div className="rounded-2xl border border-dashed border-slate-200 p-12 text-center dark:border-slate-800">
+          <Users size={28} className="mx-auto text-slate-300" />
+          <p className="mt-3 text-sm text-slate-500">
             Hələ aktiv mütəxəssis yoxdur.
           </p>
-          <p className="mt-1 text-xs text-neutral-400">
+          <p className="mt-1 text-xs text-slate-500">
             Biznes yaradılanda siz avtomatik mütəxəssis kimi əlavə olunmalı
             idiniz — görünmürsə, çıxıb yenidən daxil olun.
           </p>
@@ -99,7 +100,7 @@ export default function StaffPage() {
 
       {inactive.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-sm font-semibold text-neutral-500">
+          <h2 className="text-sm font-semibold text-slate-500">
             Deaktiv ({inactive.length})
           </h2>
           {inactive.map((member) => (
@@ -136,31 +137,43 @@ function StaffCard({
 
   return (
     <article
-      className={`flex flex-wrap items-center gap-4 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900 ${
+      className={`flex flex-wrap items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 ${
         inactive ? 'opacity-60' : ''
       }`}
     >
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-sm font-semibold text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-800 dark:bg-brand-700/20 dark:text-brand-200">
         {initials}
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-neutral-900 dark:text-white">
+        <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">
           {name}
         </p>
-        <p className="truncate text-xs text-neutral-500">
-          {[
-            STAFF_ROLE_LABELS[member.role] ?? member.role,
-            member.title,
-            member.email,
-          ]
+        <p className="truncate text-xs text-slate-500">
+          {[STAFF_ROLE_LABELS[member.role] ?? member.role, member.title]
             .filter(Boolean)
             .join(' · ')}
         </p>
+
+        {/* Əlaqə sətri ayrıca: nömrə kliklənən olmalıdır, ona görə
+            digər mətnlərlə bir sətirdə birləşdirilmir. */}
+        {(member.phone || member.email) && (
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+            {member.phone && <PhoneAction phone={member.phone} />}
+            {member.email && (
+              <a
+                href={`mailto:${member.email}`}
+                className="truncate text-xs text-slate-500 transition-colors hover:text-brand-700"
+              >
+                {member.email}
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       {member.is_owner && (
-        <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
           Sahib
         </span>
       )}
@@ -169,7 +182,7 @@ function StaffCard({
         <button
           onClick={onDeactivate}
           disabled={busy}
-          className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm text-neutral-600 transition-colors hover:bg-neutral-50 disabled:opacity-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+          className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
         >
           Deaktiv et
         </button>
@@ -211,14 +224,14 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-neutral-900">
-        <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3.5 dark:border-neutral-800">
-          <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">
+      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
             İşçi dəvət et
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-neutral-400 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X size={16} />
           </button>
@@ -227,13 +240,13 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
         {token ? (
           // Dəvət yaradıldı — linki paylaşmaq üçün göstəririk.
           <div className="space-y-3 px-5 py-5">
-            <p className="text-sm text-neutral-600 dark:text-neutral-300">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               Bu linki işçiyə göndərin. O, linkə keçib şifrə təyin edəcək və
               komandaya qoşulacaq.
             </p>
 
-            <div className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-2 dark:border-neutral-700 dark:bg-neutral-800">
-              <code className="min-w-0 flex-1 truncate text-xs text-neutral-700 dark:text-neutral-300">
+            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2 dark:border-slate-700 dark:bg-slate-800">
+              <code className="min-w-0 flex-1 truncate text-xs text-slate-700 dark:text-slate-300">
                 {inviteLink}
               </code>
               <button
@@ -241,20 +254,20 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
                   navigator.clipboard.writeText(inviteLink);
                   toast.success('Kopyalandı');
                 }}
-                className="shrink-0 rounded-md p-1.5 text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                className="shrink-0 rounded-md p-1.5 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700"
                 title="Kopyala"
               >
                 <Copy size={14} />
               </button>
             </div>
 
-            <p className="text-xs text-neutral-400">
+            <p className="text-xs text-slate-500">
               Link müddətlidir — işçi vaxtında istifadə etməlidir.
             </p>
 
             <button
               onClick={onClose}
-              className="w-full rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-neutral-900"
+              className="w-full rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800"
             >
               Bağla
             </button>
@@ -263,11 +276,11 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
           <>
             <div className="space-y-4 px-5 py-4">
               <label className="flex flex-col gap-1">
-                <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
                   E-poçt
                 </span>
-                <div className="flex items-center gap-2 rounded-lg border border-neutral-200 px-3 dark:border-neutral-700">
-                  <Mail size={14} className="text-neutral-400" />
+                <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 dark:border-slate-700">
+                  <Mail size={14} className="text-slate-500" />
                   <input
                     type="email"
                     value={email}
@@ -279,7 +292,7 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
               </label>
 
               <label className="flex flex-col gap-1">
-                <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
                   Mobil nömrə (istəyə bağlı)
                 </span>
                 <input
@@ -287,12 +300,12 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
                   value={phone}
                   onChange={(event) => setPhone(event.target.value)}
                   placeholder="+994501234567"
-                  className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                  className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
                 />
               </label>
 
               <label className="flex flex-col gap-1">
-                <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
                   Rol
                 </span>
                 <select
@@ -300,7 +313,7 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
                   onChange={(event) =>
                     setRole(event.target.value as StaffRole)
                   }
-                  className="rounded-lg border border-neutral-200 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                  className="rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
                 >
                   <option value="staff">İşçi — yalnız öz bronlarını görür</option>
                   <option value="manager">Menecer — komandanı idarə edir</option>
@@ -309,17 +322,17 @@ function InviteDialog({ onClose }: { onClose: () => void }) {
               </label>
             </div>
 
-            <div className="flex justify-end gap-2 border-t border-neutral-100 px-5 py-3 dark:border-neutral-800">
+            <div className="flex justify-end gap-2 border-t border-slate-100 px-5 py-3 dark:border-slate-800">
               <button
                 onClick={onClose}
-                className="rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                className="rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
               >
                 Ləğv et
               </button>
               <button
                 onClick={() => invite.mutate()}
                 disabled={!email.trim() || invite.isPending}
-                className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-neutral-900"
+                className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-800 disabled:opacity-50"
               >
                 {invite.isPending && (
                   <Loader2 size={14} className="animate-spin" />

@@ -49,13 +49,13 @@ export function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="relative flex h-9 w-9 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+        className="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
         aria-label="Bildirişlər"
       >
         <Bell size={18} />
 
         {unread > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger-700 px-1 text-[10px] font-semibold text-white">
             {unread > 9 ? '9+' : unread}
           </span>
         )}
@@ -63,7 +63,7 @@ export function NotificationBell() {
         {/* Canlı bağlantı göstəricisi */}
         <span
           className={`absolute bottom-1 right-1.5 h-1.5 w-1.5 rounded-full ${
-            connected ? 'bg-emerald-500' : 'bg-neutral-300'
+            connected ? 'bg-success-700' : 'bg-slate-300'
           }`}
           title={connected ? 'Canlı bağlantı aktivdir' : 'Bağlantı yoxdur'}
         />
@@ -73,9 +73,9 @@ export function NotificationBell() {
         <>
           <div className="fixed inset-0 z-30" onClick={() => setOpen(false)} />
 
-          <div className="absolute right-0 top-11 z-40 w-88 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xl dark:border-neutral-700 dark:bg-neutral-900">
-            <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-2.5 dark:border-neutral-800">
-              <span className="text-sm font-semibold text-neutral-900 dark:text-white">
+          <div className="absolute right-0 top-11 z-40 w-88 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2.5 dark:border-slate-800">
+              <span className="text-sm font-semibold text-slate-900 dark:text-white">
                 Bildirişlər
               </span>
 
@@ -83,7 +83,7 @@ export function NotificationBell() {
                 <button
                   onClick={() => markAllRead.mutate()}
                   disabled={markAllRead.isPending}
-                  className="flex items-center gap-1 text-xs text-neutral-500 transition-colors hover:text-neutral-900 disabled:opacity-50 dark:hover:text-white"
+                  className="flex items-center gap-1 text-xs text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-50 dark:hover:text-white"
                 >
                   <Check size={12} />
                   Hamısını oxu
@@ -93,7 +93,7 @@ export function NotificationBell() {
 
             <div className="max-h-96 overflow-y-auto">
               {items.length === 0 && (
-                <p className="px-4 py-8 text-center text-sm text-neutral-400">
+                <p className="px-4 py-8 text-center text-sm text-slate-500">
                   Hələ bildiriş yoxdur
                 </p>
               )}
@@ -102,7 +102,7 @@ export function NotificationBell() {
                 <button
                   key={item.id}
                   onClick={() => !item.is_read && markRead.mutate(item.id)}
-                  className={`flex w-full gap-3 border-b border-neutral-50 px-4 py-3 text-left transition-colors last:border-0 hover:bg-neutral-50 dark:border-neutral-800/50 dark:hover:bg-neutral-800/50 ${
+                  className={`flex w-full gap-3 border-b border-slate-50 px-4 py-3 text-left transition-colors last:border-0 hover:bg-slate-50 dark:border-slate-800/50 dark:hover:bg-slate-800/50 ${
                     item.is_read ? '' : 'bg-sky-50/50 dark:bg-sky-500/5'
                   }`}
                 >
@@ -111,13 +111,13 @@ export function NotificationBell() {
                   </span>
 
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-medium text-neutral-900 dark:text-white">
+                    <span className="block truncate text-sm font-medium text-slate-900 dark:text-white">
                       {item.title}
                     </span>
-                    <span className="mt-0.5 block text-xs text-neutral-500 dark:text-neutral-400">
+                    <span className="mt-0.5 block text-xs text-slate-500 dark:text-slate-500">
                       {item.body}
                     </span>
-                    <span className="mt-1 block text-[11px] text-neutral-400">
+                    <span className="mt-1 block text-[11px] text-slate-500">
                       {timeAgo(item.created_at)}
                     </span>
                   </span>

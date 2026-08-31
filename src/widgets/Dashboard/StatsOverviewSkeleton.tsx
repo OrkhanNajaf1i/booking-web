@@ -6,7 +6,7 @@ export function StatsOverviewSkeleton() {
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
-          className="relative overflow-hidden rounded-2xl bg-white p-6 border border-gray-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]"
+          className="relative overflow-hidden rounded-2xl bg-white p-6 border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]"
         >
           <div className="flex items-start justify-between">
             <div className="flex-1 space-y-2">

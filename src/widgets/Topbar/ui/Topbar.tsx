@@ -1,90 +1,104 @@
-import { LogOut, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ChevronDown, LogOut } from 'lucide-react';
+
 import { NotificationBell } from './NotificationBell';
 import { useBusinessQuery } from '@/entities/business';
-// import {Business} from '@/entities/business/model/types';
+import { decodeJwt } from '@/shared/lib/jwt';
 
-const MOCK_USER = {
-  name: 'Orxan Məmmədov',
-  email: 'orxan@gmail.com',
-  avatar: null, 
-};
+/** "Səhiyyə Klinikası" → "SK". Boş ad gələndə çökməməlidir. */
+function getInitials(name?: string | null): string {
+  const clean = (name ?? '').trim();
+  if (!clean) return '—';
 
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((n) => n[0])
+  return clean
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0] ?? '')
     .join('')
-    .toUpperCase()
-    .slice(0, 2);
+    .toUpperCase();
+}
+
+/**
+ * Girmiş istifadəçinin e-poçtu.
+ *
+ * Əvvəl burada sabit yazılmış ad və e-poçt vardı — hər istifadəçi
+ * başqasının məlumatını görürdü. Token onsuz da yaddaşdadır, oradan
+ * oxunur.
+ */
+function useSessionEmail(): string | null {
+  const token = localStorage.getItem('accessToken');
+  if (!token) return null;
+
+  const claims = decodeJwt<{ email?: string }>(token);
+  return claims?.email ?? null;
 }
 
 export function Topbar() {
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { data: business } = useBusinessQuery();
+  const email = useSessionEmail();
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     navigate('/login', { replace: true });
   };
-  const {data:business} = useBusinessQuery()
-  return (
-    <header className="flex h-14 shrink-0 items-center justify-between border-b border-neutral-200 bg-white px-6 dark:border-neutral-800 dark:bg-neutral-950">
 
-      {/* Sol: Sistem adı */}
-      <span className="text-sm font-semibold text-neutral-900 dark:text-white">
-        {business?.service_category}
+  return (
+    <header className="flex h-15 shrink-0 items-center justify-between border-b border-slate-200 bg-card px-5 dark:border-slate-800 sm:px-6">
+      {/* Sol: biznesin ixtisası — hansı hesabda olduğunu xatırladır */}
+      <span className="truncate text-sm font-medium text-slate-500">
+        {business?.service_category || business?.category_name || ''}
       </span>
 
-      {/* Sağ: Actions */}
       <div className="flex items-center gap-1">
-
-        {/* Notification Bell */}
         <NotificationBell />
 
-        {/* User menu */}
         <div className="relative">
           <button
-            onClick={() => setUserMenuOpen((prev) => !prev)}
-            className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            onClick={() => setMenuOpen((previous) => !previous)}
+            aria-expanded={menuOpen}
+            aria-haspopup="menu"
+            className="flex items-center gap-2.5 rounded-lg py-1.5 pr-2 pl-1.5 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
           >
-            {/* Avatar */}
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-200 text-xs font-semibold text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
-              {getInitials(business?.name!)}
-            </div>
-
-            {/* Ad */}
-            <span className="hidden text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:block">
-              {business?.name}
+            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-brand-50 text-xs font-semibold text-brand-800 dark:bg-brand-700/20 dark:text-brand-200">
+              {getInitials(business?.name)}
             </span>
 
-            <ChevronDown size={14} className="text-neutral-400" />
+            <span className="hidden max-w-40 truncate text-sm font-medium text-slate-700 dark:text-slate-200 sm:block">
+              {business?.name ?? 'Hesab'}
+            </span>
+
+            <ChevronDown size={14} className="shrink-0 text-slate-400" />
           </button>
 
-          {/* Dropdown */}
-          {userMenuOpen && (
+          {menuOpen && (
             <>
-              {/* Backdrop */}
               <div
                 className="fixed inset-0 z-30"
-                onClick={() => setUserMenuOpen(false)}
+                onClick={() => setMenuOpen(false)}
+                aria-hidden="true"
               />
 
-              <div className="absolute right-0 top-11 z-40 w-52 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xl dark:border-neutral-700 dark:bg-neutral-900">
-                {/* User info */}
-                <div className="border-b border-neutral-100 px-4 py-3 dark:border-neutral-800">
-                  <p className="text-sm font-medium text-neutral-900 dark:text-white">
-                    {MOCK_USER.name}
+              <div
+                role="menu"
+                className="absolute top-12 right-0 z-40 w-60 overflow-hidden rounded-xl border border-slate-200 bg-popover shadow-lg dark:border-slate-700"
+              >
+                <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-800">
+                  <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
+                    {business?.name ?? 'Hesab'}
                   </p>
-                  <p className="text-xs text-neutral-400">{MOCK_USER.email}</p>
+                  {email && (
+                    <p className="mt-0.5 truncate text-xs text-slate-500">{email}</p>
+                  )}
                 </div>
 
-                {/* Logout */}
                 <button
+                  role="menuitem"
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
+                  className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-danger-700 transition-colors hover:bg-danger-50 dark:hover:bg-danger-700/10"
                 >
                   <LogOut size={15} />
                   Çıxış
@@ -93,7 +107,6 @@ export function Topbar() {
             </>
           )}
         </div>
-
       </div>
     </header>
   );

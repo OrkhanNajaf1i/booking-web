@@ -1,3 +1,5 @@
+import type { BadgeTone } from '@/shared/ui/primitives';
+
 export type BookingStatus =
   | 'pending'
   | 'confirmed'
@@ -10,6 +12,9 @@ export interface Booking {
   id: string;
   business_id: string;
   customer_id: string;
+  /** Provayder siyahısında dolur — müştəriyə zəng etmək üçün. */
+  customer_name?: string;
+  customer_phone?: string;
   staff_id: string;
   service_id?: string;
   location_id?: string;
@@ -65,33 +70,22 @@ export interface BookingFilters {
   offset?: number;
 }
 
-/** Status → görünən mətn və rəng sinifləri. */
+/**
+ * Status → görünən mətn və nişan tonu.
+ *
+ * Rəng sinifləri əvvəl burada xam Tailwind adları kimi yazılırdı
+ * (`bg-amber-50 …`). İndi yalnız ton adı saxlanılır — rəngin özü
+ * `Badge` parçasında bir yerdə təyin olunur, ona görə paletta
+ * dəyişəndə bura toxunmaq lazım gəlmir.
+ */
 export const BOOKING_STATUS_META: Record<
   BookingStatus,
-  { label: string; className: string }
+  { label: string; tone: BadgeTone }
 > = {
-  pending: {
-    label: 'Təsdiq gözləyir',
-    className: 'bg-amber-50 text-amber-700 ring-amber-600/20',
-  },
-  confirmed: {
-    label: 'Təsdiqlənib',
-    className: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
-  },
-  reschedule_proposed: {
-    label: 'Yeni vaxt təklif olunub',
-    className: 'bg-sky-50 text-sky-700 ring-sky-600/20',
-  },
-  cancelled: {
-    label: 'Ləğv edilib',
-    className: 'bg-rose-50 text-rose-700 ring-rose-600/20',
-  },
-  completed: {
-    label: 'Tamamlanıb',
-    className: 'bg-neutral-100 text-neutral-700 ring-neutral-500/20',
-  },
-  no_show: {
-    label: 'Gəlmədi',
-    className: 'bg-orange-50 text-orange-700 ring-orange-600/20',
-  },
+  pending: { label: 'Təsdiq gözləyir', tone: 'warning' },
+  confirmed: { label: 'Təsdiqlənib', tone: 'success' },
+  reschedule_proposed: { label: 'Yeni vaxt təklif olunub', tone: 'info' },
+  cancelled: { label: 'Ləğv edilib', tone: 'danger' },
+  completed: { label: 'Tamamlanıb', tone: 'neutral' },
+  no_show: { label: 'Gəlmədi', tone: 'warning' },
 };

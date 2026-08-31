@@ -4,27 +4,35 @@
  * Müştəri bron edən kimi WebSocket hadisəsi gəlir, keş invalidasiya olunur
  * və sorğu səhifəni yeniləmədən siyahıda görünür.
  */
-import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { CalendarClock, Check, Loader2, RefreshCw, X } from 'lucide-react';
+import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { CalendarClock, Check, Loader2, RefreshCw, X } from "lucide-react";
 
-import { bookingApi } from '@/entities/booking/api/bookingApi';
+import { bookingApi } from "@/entities/booking/api/bookingApi";
 import {
   BOOKING_STATUS_META,
   type Booking,
   type BookingStatus,
-} from '@/entities/booking/model/types';
-import { ProposeTimeDialog } from '@/features/booking/propose/ui/ProposeTimeDialog';
-import { useRealtime } from '@/shared/lib/realtime/RealtimeProvider';
-import { formatDayLabel, formatTimeRange } from '@/shared/lib/date';
+} from "@/entities/booking/model/types";
+import { ProposeTimeDialog } from "@/features/booking/propose/ui/ProposeTimeDialog";
+import { useRealtime } from "@/shared/lib/realtime/RealtimeProvider";
+import { formatDayLabel, formatTimeRange } from "@/shared/lib/date";
+import {
+  Badge,
+  Button,
+  Card,
+  EmptyState,
+  PageHeader,
+} from "@/shared/ui/primitives";
+import { PhoneAction } from "@/shared/ui/PhoneAction";
 
-const FILTERS: { label: string; value: BookingStatus | 'all' }[] = [
-  { label: 'Hamısı', value: 'all' },
-  { label: 'Təsdiq gözləyir', value: 'pending' },
-  { label: 'Təsdiqlənib', value: 'confirmed' },
-  { label: 'Təklif göndərilib', value: 'reschedule_proposed' },
-  { label: 'Ləğv edilib', value: 'cancelled' },
+const FILTERS: { label: string; value: BookingStatus | "all" }[] = [
+  { label: "Hamısı", value: "all" },
+  { label: "Təsdiq gözləyir", value: "pending" },
+  { label: "Təsdiqlənib", value: "confirmed" },
+  { label: "Təklif göndərilib", value: "reschedule_proposed" },
+  { label: "Ləğv edilib", value: "cancelled" },
 ];
 
 function formatRange(startIso: string, endIso: string): string {
@@ -35,13 +43,12 @@ export default function BookingsPage() {
   const queryClient = useQueryClient();
   const { connected } = useRealtime();
 
-  const [filter, setFilter] = useState<BookingStatus | 'all'>('all');
+  const [filter, setFilter] = useState<BookingStatus | "all">("all");
   const [proposeFor, setProposeFor] = useState<Booking | null>(null);
 
   const { data: bookings = [], isLoading } = useQuery({
-    queryKey: ['bookings', 'list', filter],
-    queryFn: () =>
-      bookingApi.list(filter === 'all' ? {} : { status: filter }),
+    queryKey: ["bookings", "list", filter],
+    queryFn: () => bookingApi.list(filter === "all" ? {} : { status: filter }),
   });
 
   const runAction = useMutation({
@@ -49,72 +56,72 @@ export default function BookingsPage() {
       action,
       booking,
     }: {
-      action: 'confirm' | 'cancel' | 'complete' | 'no-show';
+      action: "confirm" | "cancel" | "complete" | "no-show";
       booking: Booking;
     }) => {
       switch (action) {
-        case 'confirm':
+        case "confirm":
           return bookingApi.confirm(booking.id);
-        case 'cancel':
+        case "cancel":
           return bookingApi.cancel(booking.id);
-        case 'complete':
+        case "complete":
           return bookingApi.complete(booking.id);
-        case 'no-show':
+        case "no-show":
           return bookingApi.markNoShow(booking.id);
       }
     },
     onSuccess: () => {
-      toast.success('Yeniləndi');
-      queryClient.invalidateQueries({ queryKey: ['bookings'] });
-      queryClient.invalidateQueries({ queryKey: ['availability'] });
+      toast.success("Yeniləndi");
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["availability"] });
     },
     onError: (error: { message?: string }) =>
-      toast.error(error?.message ?? 'Əməliyyat alınmadı'),
+      toast.error(error?.message ?? "Əməliyyat alınmadı"),
   });
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
-            Bronlar
-          </h1>
-          <p className="mt-1 flex items-center gap-1.5 text-sm text-neutral-500">
+      <PageHeader
+        title="Bronlar"
+        meta={
+          <p className="mt-1.5 flex items-center gap-1.5 text-sm text-slate-500">
             <span
-              className={`h-1.5 w-1.5 rounded-full ${
-                connected ? 'bg-emerald-500' : 'bg-neutral-300'
+              className={`size-1.5 rounded-full ${
+                connected ? "bg-success-700" : "bg-slate-300"
               }`}
             />
-            {connected ? 'Canlı yenilənir' : 'Bağlantı bərpa olunur…'}
+            {connected ? "Canlı yenilənir" : "Bağlantı bərpa olunur…"}
           </p>
-        </div>
+        }
+        actions={
+          /* Süzgəclər seqment kimi bir qutuda — ayrı-ayrı düymələr
+             başlıqla eyni ağırlıqda görünürdü. */
+          <div className="flex flex-wrap gap-0.5 rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
+            {FILTERS.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => setFilter(option.value)}
+                className={`rounded-[6px] px-3 py-1.5 text-sm font-medium transition-colors ${
+                  filter === option.value
+                    ? "bg-white text-slate-900 shadow-xs dark:bg-slate-900 dark:text-white"
+                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        }
+      />
 
-        <div className="flex flex-wrap gap-1.5">
-          {FILTERS.map((option) => (
-            <button
-              key={option.value}
-              onClick={() => setFilter(option.value)}
-              className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${
-                filter === option.value
-                  ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
-                  : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800'
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      </header>
-
-      {isLoading && <p className="text-sm text-neutral-400">Yüklənir…</p>}
+      {isLoading && <p className="text-sm text-slate-500">Yüklənir…</p>}
 
       {!isLoading && bookings.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-neutral-200 p-12 text-center dark:border-neutral-800">
-          <CalendarClock size={28} className="mx-auto text-neutral-300" />
-          <p className="mt-3 text-sm text-neutral-500">
-            Bu filtrdə bron yoxdur.
-          </p>
-        </div>
+        <EmptyState
+          icon={<CalendarClock size={20} />}
+          title="Bu süzgəcdə bron yoxdur"
+          description="Müştəri vaxt seçən kimi sorğu burada görünəcək."
+        />
       )}
 
       <div className="space-y-3">
@@ -122,116 +129,158 @@ export default function BookingsPage() {
           const meta = BOOKING_STATUS_META[booking.status];
           const isBusy = runAction.isPending;
 
+          // Ləğv edilmiş və tamamlanmış bronda görüləsi iş yoxdur —
+          // boş düymə sətri ayırıcı xətlə birlikdə qalırdı.
+          const hasActions =
+            booking.status === "pending" ||
+            booking.status === "confirmed" ||
+            booking.status === "reschedule_proposed";
+
           return (
-            <article
-              key={booking.id}
-              className="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900"
-            >
+            <Card as="article" key={booking.id} padded={false} className="p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-neutral-900 dark:text-white">
+                  {/* Müştərinin adı başlıqdır: provayder əvvəlcə
+                      "kim gəlir" sualına cavab axtarır, vaxt ikinci
+                      dərəcəlidir. */}
+                  {booking.customer_name && (
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                      {booking.customer_name}
+                    </p>
+                  )}
+
+                  <p
+                    className={`tabular text-sm ${
+                      booking.customer_name
+                        ? "mt-0.5 text-slate-600 dark:text-slate-300"
+                        : "font-semibold text-slate-900 dark:text-white"
+                    }`}
+                  >
                     {formatRange(booking.start_time, booking.end_time)}
                   </p>
-                  <p className="mt-0.5 text-xs text-neutral-500">
+
+                  <p className="mt-0.5 text-xs text-slate-500">
                     {booking.duration_mins} dəq
-                    {booking.notes ? ` · ${booking.notes}` : ''}
+                    {booking.notes ? ` · ${booking.notes}` : ""}
                   </p>
 
-                  {booking.status === 'reschedule_proposed' &&
+                  {booking.customer_phone && (
+                    <div className="mt-1.5">
+                      <PhoneAction phone={booking.customer_phone} />
+                    </div>
+                  )}
+
+                  {booking.status === "reschedule_proposed" &&
                     booking.proposed_start_time && (
-                      <p className="mt-2 rounded-lg bg-sky-50 px-2.5 py-1.5 text-xs text-sky-800 dark:bg-sky-500/10 dark:text-sky-300">
-                        Təklif olunan vaxt:{' '}
+                      <p className="mt-2 rounded-lg bg-info-50 px-2.5 py-2 text-xs text-info-700 dark:bg-info-700/15 dark:text-info-200">
+                        Təklif olunan vaxt:{" "}
                         <strong>
                           {formatRange(
                             booking.proposed_start_time,
-                            booking.proposed_end_time ?? booking.proposed_start_time
+                            booking.proposed_end_time ??
+                              booking.proposed_start_time,
                           )}
                         </strong>
-                        {booking.proposal_note ? ` — ${booking.proposal_note}` : ''}
+                        {booking.proposal_note
+                          ? ` — ${booking.proposal_note}`
+                          : ""}
                         <span className="mt-0.5 block text-[11px] opacity-75">
                           Müştərinin cavabı gözlənilir
                         </span>
                       </p>
                     )}
 
-                  {booking.status === 'cancelled' && booking.cancel_reason && (
-                    <p className="mt-2 text-xs text-rose-600">
+                  {booking.status === "cancelled" && booking.cancel_reason && (
+                    <p className="mt-2 text-xs text-danger-700">
                       Səbəb: {booking.cancel_reason}
                     </p>
                   )}
                 </div>
 
-                <span
-                  className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${meta.className}`}
-                >
-                  {meta.label}
-                </span>
+                <Badge tone={meta.tone}>{meta.label}</Badge>
               </div>
 
               {/* Əməliyyatlar — yalnız statusun icazə verdikləri */}
-              <div className="mt-3 flex flex-wrap gap-2 border-t border-neutral-100 pt-3 dark:border-neutral-800">
-                {booking.status === 'pending' && (
-                  <ActionButton
-                    icon={<Check size={14} />}
-                    label="Təsdiqlə"
-                    tone="primary"
-                    disabled={isBusy}
-                    onClick={() =>
-                      runAction.mutate({ action: 'confirm', booking })
-                    }
-                  />
-                )}
+              {hasActions && (
+                <div className="mt-3.5 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3.5 dark:border-slate-800">
+                  {booking.status === "pending" && (
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      icon={<Check size={14} />}
+                      disabled={isBusy}
+                      onClick={() =>
+                        runAction.mutate({ action: "confirm", booking })
+                      }
+                    >
+                      Təsdiqlə
+                    </Button>
+                  )}
 
-                {(booking.status === 'pending' ||
-                  booking.status === 'confirmed') && (
-                  <ActionButton
-                    icon={<RefreshCw size={14} />}
-                    label="Başqa vaxt təklif et"
-                    disabled={isBusy}
-                    onClick={() => setProposeFor(booking)}
-                  />
-                )}
+                  {(booking.status === "pending" ||
+                    booking.status === "confirmed") && (
+                    <Button
+                      size="sm"
+                      icon={<RefreshCw size={14} />}
+                      disabled={isBusy}
+                      onClick={() => setProposeFor(booking)}
+                    >
+                      Başqa vaxt təklif et
+                    </Button>
+                  )}
 
-                {booking.status === 'confirmed' && (
-                  <ActionButton
-                    icon={<Check size={14} />}
-                    label="Tamamlandı"
-                    disabled={isBusy}
-                    onClick={() =>
-                      runAction.mutate({ action: 'complete', booking })
-                    }
-                  />
-                )}
+                  {booking.status === "confirmed" && (
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      icon={<Check size={14} />}
+                      disabled={isBusy}
+                      onClick={() =>
+                        runAction.mutate({ action: "complete", booking })
+                      }
+                    >
+                      Tamamlandı
+                    </Button>
+                  )}
 
-                {booking.status === 'confirmed' && (
-                  <ActionButton
-                    label="Gəlmədi"
-                    disabled={isBusy}
-                    onClick={() =>
-                      runAction.mutate({ action: 'no-show', booking })
-                    }
-                  />
-                )}
+                  {booking.status === "confirmed" && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      disabled={isBusy}
+                      onClick={() =>
+                        runAction.mutate({ action: "no-show", booking })
+                      }
+                    >
+                      Gəlmədi
+                    </Button>
+                  )}
 
-                {(booking.status === 'pending' ||
-                  booking.status === 'confirmed' ||
-                  booking.status === 'reschedule_proposed') && (
-                  <ActionButton
-                    icon={<X size={14} />}
-                    label="Ləğv et"
-                    tone="danger"
-                    disabled={isBusy}
-                    onClick={() =>
-                      runAction.mutate({ action: 'cancel', booking })
-                    }
-                  />
-                )}
+                  {(booking.status === "pending" ||
+                    booking.status === "confirmed" ||
+                    booking.status === "reschedule_proposed") && (
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      icon={<X size={14} />}
+                      disabled={isBusy}
+                      onClick={() =>
+                        runAction.mutate({ action: "cancel", booking })
+                      }
+                    >
+                      Ləğv et
+                    </Button>
+                  )}
 
-                {isBusy && (
-                  <Loader2 size={14} className="ml-1 animate-spin self-center text-neutral-400" />
-                )}
-              </div>
-            </article>
+                  {isBusy && (
+                    <Loader2
+                      size={14}
+                      className="animate-spin text-slate-400"
+                    />
+                  )}
+                </div>
+              )}
+            </Card>
           );
         })}
       </div>
@@ -243,39 +292,5 @@ export default function BookingsPage() {
         />
       )}
     </div>
-  );
-}
-
-function ActionButton({
-  icon,
-  label,
-  tone = 'default',
-  disabled,
-  onClick,
-}: {
-  icon?: React.ReactNode;
-  label: string;
-  tone?: 'default' | 'primary' | 'danger';
-  disabled?: boolean;
-  onClick: () => void;
-}) {
-  const toneClasses = {
-    default:
-      'border border-neutral-200 text-neutral-700 hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800',
-    primary:
-      'bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-900',
-    danger:
-      'border border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-500/30 dark:hover:bg-rose-500/10',
-  }[tone];
-
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-50 ${toneClasses}`}
-    >
-      {icon}
-      {label}
-    </button>
   );
 }

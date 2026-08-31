@@ -1,5 +1,9 @@
-import {type CustomerDto } from '@/entities/customer/model/types';
-import {CustomerRow} from '@/entities/customer/ui/CustomerRow';
+import { Users } from 'lucide-react';
+
+import { type CustomerDto } from '@/entities/customer/model/types';
+import { CustomerRow } from '@/entities/customer/ui/CustomerRow';
+import { EmptyState } from '@/shared/ui/primitives';
+
 import { CustomerTableSkeleton } from './CustomerTableSkeleton';
 
 interface CustomerTableProps {
@@ -9,62 +13,60 @@ interface CustomerTableProps {
   totalPages?: number;
 }
 
-export function CustomerTable({ 
-  customers, 
-  isLoading, 
-  page = 1, 
-  totalPages = 1 
+const COLUMNS = [
+  { label: 'Ad', align: 'left' },
+  { label: 'E-poçt', align: 'left' },
+  { label: 'Telefon', align: 'left' },
+  { label: 'Vəziyyət', align: 'left' },
+  { label: 'Randevu', align: 'center' },
+  { label: 'Qeyd', align: 'left' },
+] as const;
+
+export function CustomerTable({
+  customers,
+  isLoading,
+  page = 1,
+  totalPages = 1,
 }: CustomerTableProps) {
   if (isLoading) {
     return <CustomerTableSkeleton rows={8} />;
   }
 
-  // Empty state
   if (!customers.length) {
     return (
-      <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
-        <div className="mx-auto w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-          <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-1">No customers found</h3>
-        <p className="text-sm text-gray-500">Get started by adding your first customer</p>
-      </div>
+      <EmptyState
+        icon={<Users size={20} />}
+        title="Hələ müştəri yoxdur"
+        description="Kimsə sizdə randevu alan kimi burada görünəcək."
+      />
     );
   }
 
-  // Table view
   return (
-    <div className="rounded-lg border border-gray-200 bg-white overflow-hidden shadow-sm">
-      <div className="overflow-x-auto">
-        <table className="w-full divide-y divide-gray-200">
-          {/* Table Header */}
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Email
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Phone
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Bookings
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Notes
-              </th>
+    <div className="rounded-xl border border-slate-200 bg-card shadow-xs dark:border-slate-800">
+      {/*
+        `overflow-visible` qəsdəndir: nömrənin "zəng et / kopyala"
+        menyusu cədvəlin kənarından çıxır. Dar ekranda üfüqi sürüşdürmə
+        lazım olduğu üçün ora ayrıca sarğı qoyulub.
+      */}
+      <div className="scroll-thin overflow-x-auto overflow-y-visible">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-slate-200 dark:border-slate-800">
+              {COLUMNS.map((column) => (
+                <th
+                  key={column.label}
+                  className={`px-4 py-3 text-xs font-semibold tracking-wide text-slate-500 uppercase ${
+                    column.align === 'center' ? 'text-center' : 'text-left'
+                  }`}
+                >
+                  {column.label}
+                </th>
+              ))}
             </tr>
           </thead>
 
-          {/* Table Body (Entity row-ları istifadə edirik) */}
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody>
             {customers.map((customer) => (
               <CustomerRow key={customer.id} customer={customer} />
             ))}
@@ -72,15 +74,20 @@ export function CustomerTable({
         </table>
       </div>
 
-      {/* Pagination Info */}
-      <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
-        <p className="text-sm text-gray-700">
-          Showing <span className="font-medium">{customers.length}</span> customers
+      <div className="border-t border-slate-200 px-4 py-3 dark:border-slate-800">
+        <p className="text-sm text-slate-500">
+          <span className="font-medium text-slate-700 dark:text-slate-200">
+            {customers.length}
+          </span>{' '}
+          müştəri
           {totalPages > 1 && (
-            <span>
-              {' '}- Page <span className="font-medium">{page}</span> of{' '}
-              <span className="font-medium">{totalPages}</span>
-            </span>
+            <>
+              {' · '}
+              <span className="tabular">
+                {page}/{totalPages}
+              </span>{' '}
+              səhifə
+            </>
           )}
         </p>
       </div>

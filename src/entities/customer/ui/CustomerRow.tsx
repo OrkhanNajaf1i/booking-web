@@ -1,3 +1,6 @@
+import { Badge } from '@/shared/ui/primitives';
+import { PhoneAction } from '@/shared/ui/PhoneAction';
+
 import type { CustomerDto } from '../model/types';
 
 interface CustomerRowProps {
@@ -5,41 +8,50 @@ interface CustomerRowProps {
 }
 
 export function CustomerRow({ customer }: CustomerRowProps) {
+  // Telefonla qeydiyyatdan keçən müştərinin e-poçtu sintetikdir
+  // (`…@phone.invalid`) — onu göstərmək yanıldıcıdır.
+  const email = customer.email?.endsWith('@phone.invalid') ? '' : customer.email;
+
   return (
-    <tr className="border-b hover:bg-gray-50 transition-colors">
+    <tr className="border-b border-slate-100 transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/40">
       <td className="px-4 py-3">
-        <div className="font-medium text-gray-900">{customer.full_name}</div>
+        <div className="font-medium text-slate-900 dark:text-white">
+          {customer.full_name}
+        </div>
       </td>
 
       <td className="px-4 py-3">
-        <div className="text-sm text-gray-600">{customer.email}</div>
+        {email ? (
+          <a
+            href={`mailto:${email}`}
+            className="text-sm text-slate-600 transition-colors hover:text-brand-700 dark:text-slate-300"
+          >
+            {email}
+          </a>
+        ) : (
+          <span className="text-sm text-slate-400">—</span>
+        )}
       </td>
 
       <td className="px-4 py-3">
-        <div className="text-sm text-gray-900">{customer.phone}</div>
+        <PhoneAction phone={customer.phone} />
       </td>
 
       <td className="px-4 py-3">
-        <span
-          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-            customer.status === 'active'
-              ? 'bg-green-100 text-green-800'
-              : 'bg-gray-100 text-gray-800'
-          }`}
-        >
-          {customer.status}
-        </span>
+        <Badge tone={customer.status === 'active' ? 'success' : 'neutral'}>
+          {customer.status === 'active' ? 'Aktiv' : 'Deaktiv'}
+        </Badge>
       </td>
 
       <td className="px-4 py-3 text-center">
-        <span className="text-sm font-medium text-gray-900">
+        <span className="tabular text-sm font-medium text-slate-900 dark:text-white">
           {customer.total_bookings}
         </span>
       </td>
 
       <td className="px-4 py-3">
         {customer.notes && (
-          <div className="text-xs text-gray-500 truncate max-w-xs">
+          <div className="max-w-xs truncate text-xs text-slate-500">
             {customer.notes}
           </div>
         )}
