@@ -1,8 +1,21 @@
+import { useState } from 'react';
+
 import { useCreateSoloBusiness } from '../model/useCreateBusiness';
 import type { SoloBusinessDto } from '@/entities/business/model/types';
+import {
+  ProfessionPicker,
+  type ProfessionValue,
+} from '@/shared/ui/ProfessionPicker';
 
 export function SoloBusinessForm() {
   const { mutate, isPending } = useCreateSoloBusiness();
+
+  // Peşə sabit siyahıdandır, amma istifadəçi öz sözü ilə də yaza
+  // bilir. Qruplaşdırma yalnız seçilən sahəyə baxır.
+  const [profession, setProfession] = useState<ProfessionValue>({
+    categorySlug: '',
+    customName: '',
+  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -10,7 +23,8 @@ export function SoloBusinessForm() {
     const dto: SoloBusinessDto = {
       name: (form.elements.namedItem('name') as HTMLInputElement).value,
       phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
-      service_category: (form.elements.namedItem('service_category') as HTMLInputElement).value,
+      category_slug: profession.categorySlug,
+      service_category: profession.customName,
     };
     mutate(dto);
   };
@@ -43,19 +57,18 @@ export function SoloBusinessForm() {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Xidmət kateqoriyası
+          Peşəniz
         </label>
-        <input
-          name="service_category"
-          required
-          placeholder="məs., Bərbərxana, Gözəllik salonu, Diş klinikası"
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <ProfessionPicker value={profession} onChange={setProfession} />
+        <p className="mt-1 text-xs text-gray-500">
+          Siyahıdan seçin, yoxdursa özünüz yazın. Müştəri sizi tətbiqdə
+          bu ad altında tapacaq.
+        </p>
       </div>
 
       <button
         type="submit"
-        disabled={isPending}
+        disabled={isPending || !profession.categorySlug}
         className="w-full py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
       >
         {isPending ? 'Yaradılır...' : 'Başla'}

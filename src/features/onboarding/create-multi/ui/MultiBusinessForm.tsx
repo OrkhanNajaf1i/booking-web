@@ -1,8 +1,19 @@
+import { useState } from 'react';
+
 import { useCreateMultiBusiness } from '../model/useCreateBusiness';
 import type { MultiBusinessDto } from '@/entities/business/model/types';
+import {
+  ProfessionPicker,
+  type ProfessionValue,
+} from '@/shared/ui/ProfessionPicker';
 
 export function MultiBusinessForm() {
   const { mutate, isPending } = useCreateMultiBusiness();
+
+  const [profession, setProfession] = useState<ProfessionValue>({
+    categorySlug: '',
+    customName: '',
+  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -10,7 +21,10 @@ export function MultiBusinessForm() {
     const dto: MultiBusinessDto = {
       name: (form.elements.namedItem('name') as HTMLInputElement).value,
       phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
-      industry: (form.elements.namedItem('industry') as HTMLInputElement).value,
+      category_slug: profession.categorySlug,
+      service_category: profession.customName,
+      // Sənaye sahəsi artıq kateqoriyadan çıxır — ayrıca sual verilmir.
+      industry: profession.categorySlug,
     };
     mutate(dto);
   };
@@ -43,19 +57,17 @@ export function MultiBusinessForm() {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Sənaye sahəsi
+          Fəaliyyət sahəniz
         </label>
-        <input
-          name="industry"
-          required
-          placeholder="məs., Səhiyyə, Gözəllik, Fitnes"
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <ProfessionPicker value={profession} onChange={setProfession} />
+        <p className="mt-1 text-xs text-gray-500">
+          Siyahıdan seçin, yoxdursa özünüz yazın.
+        </p>
       </div>
 
       <button
         type="submit"
-        disabled={isPending}
+        disabled={isPending || !profession.categorySlug}
         className="w-full py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
       >
         {isPending ? 'Yaradılır...' : 'Biznes yarat'}

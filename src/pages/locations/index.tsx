@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { Loader2, MapPin, Pencil, Plus, X } from 'lucide-react';
+import { Loader2, MapPin, Pencil, Plus, RotateCcw, Trash2, X } from 'lucide-react';
 
 import {
   locationApi,
@@ -28,15 +28,42 @@ export default function LocationsPage() {
     queryFn: locationApi.list,
   });
 
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: ['locations'] });
+
+  const fail = (error: unknown) =>
+    toast.error(extractErrorMessage(error, 'Əməliyyat alınmadı'));
+
   const deactivate = useMutation({
     mutationFn: (id: string) => locationApi.deactivate(id),
     onSuccess: () => {
       toast.success('Filial deaktiv edildi');
-      queryClient.invalidateQueries({ queryKey: ['locations'] });
+      invalidate();
     },
-    onError: (error) =>
-      toast.error(extractErrorMessage(error, 'Əməliyyat alınmadı')),
+    onError: fail,
   });
+
+  const activate = useMutation({
+    mutationFn: (id: string) => locationApi.activate(id),
+    onSuccess: () => {
+      toast.success('Filial yenidən aktivdir');
+      invalidate();
+    },
+    onError: fail,
+  });
+
+  // Həmişəlik silmə. Filiala bağlı randevu varsa server 409 verir və
+  // mesaj istifadəçiyə deaktiv etməyi təklif edir.
+  const remove = useMutation({
+    mutationFn: (id: string) => locationApi.remove(id),
+    onSuccess: () => {
+      toast.success('Filial silindi');
+      invalidate();
+    },
+    onError: fail,
+  });
+
+  const busy = deactivate.isPending || activate.isPending || remove.isPending;
 
   return (
     <div className="space-y-6">
@@ -77,9 +104,16 @@ export default function LocationsPage() {
               location.is_active ? '' : 'opacity-60'
             }`}
           >
-            <h3 className="truncate text-sm font-semibold text-neutral-900 dark:text-white">
-              {location.name}
-            </h3>
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="min-w-0 flex-1 truncate text-sm font-semibold text-neutral-900 dark:text-white">
+                {location.name}
+              </h3>
+              {!location.is_active && (
+                <span className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-500 dark:bg-neutral-800">
+                  Deaktiv
+                </span>
+              )}
+            </div>
 
             <p className="mt-1 text-xs text-neutral-500">
               {[location.address, location.city].filter(Boolean).join(', ') ||
@@ -97,24 +131,53 @@ export default function LocationsPage() {
               </p>
             )}
 
-            {location.is_active && (
-              <div className="mt-3 flex gap-2 border-t border-neutral-100 pt-3 dark:border-neutral-800">
-                <button
-                  onClick={() => setEditing(location)}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-xs text-neutral-600 transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
-                >
-                  <Pencil size={12} />
-                  Düzəliş
-                </button>
-                <button
-                  onClick={() => deactivate.mutate(location.id)}
-                  disabled={deactivate.isPending}
-                  className="rounded-lg px-3 py-1.5 text-xs text-neutral-500 transition-colors hover:bg-neutral-100 disabled:opacity-50 dark:hover:bg-neutral-800"
-                >
-                  Deaktiv et
-                </button>
-              </div>
-            )}
+            <div className="mt-3 flex flex-wrap gap-2 border-t border-neutral-100 pt-3 dark:border-neutral-800">
+              {location.is_active ? (
+                <>
+                  <button
+                    onClick={() => setEditing(location)}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-xs text-neutral-600 transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                  >
+                    <Pencil size={12} />
+                    Düzəliş
+                  </button>
+                  <button
+                    onClick={() => deactivate.mutate(location.id)}
+                    disabled={busy}
+                    className="rounded-lg px-3 py-1.5 text-xs text-neutral-500 transition-colors hover:bg-neutral-100 disabled:opacity-50 dark:hover:bg-neutral-800"
+                  >
+                    Deaktiv et
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => activate.mutate(location.id)}
+                    disabled={busy}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-xs text-neutral-600 transition-colors hover:bg-neutral-50 disabled:opacity-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                  >
+                    <RotateCcw size={12} />
+                    Aktivləşdir
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          `"${location.name}" həmişəlik silinsin? Bu geri qaytarıla bilməz.`,
+                        )
+                      ) {
+                        remove.mutate(location.id);
+                      }
+                    }}
+                    disabled={busy}
+                    className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-red-600 transition-colors hover:bg-red-50 disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                  >
+                    <Trash2 size={12} />
+                    Sil
+                  </button>
+                </>
+              )}
+            </div>
           </article>
         ))}
       </div>

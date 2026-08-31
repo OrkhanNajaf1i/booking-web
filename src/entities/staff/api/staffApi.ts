@@ -3,6 +3,13 @@ import { apiClient } from '@/shared/api/client';
 export type StaffRole = 'admin' | 'manager' | 'staff';
 
 export interface StaffMember {
+  /**
+   * Biznes sahibi. Sahib işçi siyahısından silinmir — tək işləyəndə
+   * bu, yeganə işçini silmək olardı; komandada isə biznesi idarə edən
+   * adam qalmazdı. Qadağa serverdə tətbiq olunur, bu sahə yalnız
+   * düyməni gizlətmək üçündür.
+   */
+  is_owner?: boolean;
   id: string;
   user_id: string;
   business_id?: string;
