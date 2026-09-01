@@ -4,6 +4,7 @@ import { businessApi } from '@/entities/business/api/businessApi';
 import type { Business, MultiBusinessDto } from '@/entities/business/model/types';
 import type { RefreshResponse } from '@/entities/session/model/types';
 import { toast } from 'sonner';
+import { extractErrorMessage } from '@/shared/api/errors';
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -29,10 +30,7 @@ export function useCreateMultiBusiness() {
       navigate(`/business/${business.id}/dashboard`);
     },
 
-    onError: (error: any) => {
-      const message =
-        error?.response?.data?.message || 'Biznes yaratmaq mümkün olmadı.';
-      toast.error(message);
-    },
+    onError: (error) =>
+      toast.error(extractErrorMessage(error, 'Biznes yaratmaq mümkün olmadı.')),
   });
 }

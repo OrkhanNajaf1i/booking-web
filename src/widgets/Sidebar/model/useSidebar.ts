@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 
-/** Yan panelin çəkmə panelə çevrildiyi hədd (Tailwind `lg`). */
-const DESKTOP_WIDTH = 1024;
+/**
+ * Yan panelin çəkmə panelə çevrildiyi hədd (Tailwind `xl`).
+ *
+ * 1024 az idi: iPad landşaftda məhz 1024 pikseldir və panel açılıb
+ * məzmuna 790 piksel qoyurdu — cədvəllər sıxılırdı. Planşet telefon
+ * kimi davranmalıdır, masaüstündə isə panel həmişə açıqdır.
+ */
+const DESKTOP_WIDTH = 1280;
 
 export interface SidebarState {
   /** Masaüstündə dar rejim — yalnız ikonlar. */

@@ -91,10 +91,27 @@ export default function LocationsPage() {
 
       {isLoading && <p className="text-sm text-slate-500">Yüklənir…</p>}
 
+      {/* Filialsız biznes müştəri tərəfində ünvansız görünür və
+          "yaxınlıqdakılar" filtrində heç çıxmır. Yeni bizneslərdə filial
+          qeydiyyatla birlikdə yaranır; bu boşluq yalnız köhnə
+          sətirlərdə qalır, ona görə xəbərdarlıq açıq yazılır. */}
       {!isLoading && locations.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-slate-200 p-12 text-center dark:border-slate-800">
-          <MapPin size={28} className="mx-auto text-slate-300" />
-          <p className="mt-3 text-sm text-slate-500">Hələ filial yoxdur.</p>
+        <div className="rounded-2xl border border-dashed border-warning-200 bg-warning-50/60 p-8 text-center dark:border-warning-700/40 dark:bg-warning-700/10">
+          <MapPin size={28} className="mx-auto text-warning-700" />
+          <p className="mt-3 text-sm font-medium text-slate-900 dark:text-white">
+            Filial əlavə edilməyib
+          </p>
+          <p className="mx-auto mt-1 max-w-sm text-xs text-slate-600 dark:text-slate-300">
+            Müştəri sizi xəritədə görmür və «yaxınlıqdakılar» siyahısına
+            düşmürsünüz. Ünvanı əlavə edin — bir dəqiqəlik işdir.
+          </p>
+          <button
+            onClick={() => setCreating(true)}
+            className="mt-4 inline-flex items-center gap-2 h-10 rounded-lg bg-brand-700 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-800 sm:h-9.5"
+          >
+            <Plus size={15} />
+            Filial əlavə et
+          </button>
         </div>
       )}
 
